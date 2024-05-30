@@ -7,14 +7,14 @@ function App() {
   return (
     <div>
       <CustomButton count={count} setCount={setCount}>    </CustomButton>
-      {/*defining a function such as CustomButton => we can create multiple components with different state variables.   */}
+      {/*defining a function such as CustomButton => we can create multiple dynamic div components with different state variables.   */}
       <CustomButton count={count + 1} setCount={setCount}>  </CustomButton>
       <CustomButton count={count - 1} setCount={setCount}>  </CustomButton>
       <CustomButton count={count * 100} setCount={setCount}></CustomButton>
     </div>
   )
 }
-// taking props as an input . props take two input count and SetCount when mentioned above. 
+// taking props as an input . props take two (state as an)input count and SetCount when mentioned above. 
 function CustomButton(props) {
   function onClickHandler() {
     props.setCount(props.count + 1);
