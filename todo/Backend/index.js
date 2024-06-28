@@ -1,12 +1,18 @@
 const { createTodo, updateTodo } = require("./types.js")
 const { Todo } = require("./data.js")
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express();
+const cors = require('cors')
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 
+// app.use(cors({                   // it allows url request to be sent/recieved i.e. allowing a site to be insecure to allow any random url execution
+//     origin: "http://localhost:5173/"    //Adding an origin specify ki you can hit a url from this specific 5173 url.
+// }));         //CORS ERROR: WHEN YOU ARE TRYING TO SILENTLY HIT A URL/BACKEND-URL FROM A DIFFERENT FRONTEND URL
 
 app.post('/todo', async function (req, res) {
     //  "const { title, description, completed } = req.body" this is written as below using zod validation in short
@@ -48,8 +54,8 @@ app.put('/completed/', async function (req, res) {
                 message: "You sent the wrong input."
             })
     }
-    await Todo.updateOne({ _id: req.body.id },
-         { completed: true });
+    await Todo.updateOne({ _id: updatePayload.id },
+        { completed: true });
 
     res.json({
         msg: "Todo marked as completed"
