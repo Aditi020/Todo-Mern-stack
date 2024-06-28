@@ -17,3 +17,11 @@ The features of this todos are
 // Create a frontend project repository using 
 - npm create vite@latest
 
+//Create two folders
+- assets folder
+- Components folder
+
+app.jsx deals with what is to be displayed in the frontend. 
+components folder contains the components required for the frontend
+assets folder contains the assets required for the frontend
+
