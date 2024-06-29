@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from 'axios';
+
 export function CreateTodo() {
 
     const [title, setTitle] = useState("");
@@ -30,16 +32,22 @@ export function CreateTodo() {
                 margin: 10
             }}
                 onClick={() => {
-                    fetch("http://localhost:3000/todo", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            title: title,
-                            description: description
-                        }),
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
+                    axios.post("http://localhost:3000/todo", {
+                        title: title,
+                        description: description
                     })
+
+                        // Below is an example of how to use fetch instead of axios 
+                        // fetch("http://localhost:3000/todo", {
+                        //     method: "POST",
+                        //     body: JSON.stringify({
+                        //         title: title,
+                        //         description: description
+                        //     }),
+                        //     headers: {
+                        //         "Content-Type": "application/json"
+                        //     }
+                        // })
                         .then(async function (res) {
                             const json = await res.json();
                             console.log(json);
