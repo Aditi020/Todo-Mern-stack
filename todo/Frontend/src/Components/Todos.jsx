@@ -4,6 +4,7 @@ export function Todos({ todos, onComplete }) {
     return <div>
         {todos.map(function (todo) {
             return (
+                //Usage of Key in react
                 <div key={todo._id}>
                     <h1>{todo.title}</h1>
                     <h2>{todo.description}</h2>
