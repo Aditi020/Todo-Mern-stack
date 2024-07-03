@@ -32,34 +32,39 @@ export function CreateTodo() {
                 margin: 10
             }}
                 onClick={() => {
-                    axios.post("http://localhost:3000/todo", {
-                        title: title,
-                        description: description
-                    })
-
-                        // Below is an example of how to use fetch instead of axios 
-                        // fetch("http://localhost:3000/todo", {
-                        //     method: "POST",
-                        //     body: JSON.stringify({
-                        //         title: title,
-                        //         description: description
-                        //     }),
-                        //     headers: {
-                        //         "Content-Type": "application/json"
-                        //     }
-                        // })
-                        .then(async function (res) {
-                            const json = await res.json();
-                            console.log(json);
-                            alert("Todo created successfully");
+                    if (title && description) {
+                        axios.post("http://localhost:3000/todo", {
+                            title: title,
+                            description: description
                         })
-                        .catch(error => {
-                            console.error('Error creating todo:', error);
-                            alert("Error creating todo");
-                            console.error('Error creating todo:', error);
-                        });
-                }
-                }> Add a Todo
+
+                            // Below is an example of how to use fetch instead of axios 
+                            // fetch("http://localhost:3000/todo", {
+                            //     method: "POST",
+                            //     body: JSON.stringify({
+                            //         title: title,
+                            //         description: description
+                            //     }),
+                            //     headers: {
+                            //         "Content-Type": "application/json"
+                            //     }
+                            // })
+                            .then(async function (res) {
+                                const json = await res.json();
+                                console.log(json);
+                                alert("Todo created successfully");
+                            })
+                            .catch(error => {
+                                console.error('Error creating todo:', error);
+                                alert("Error creating todo");
+                                console.error('Error creating todo:', error);
+                            });
+                    }
+                    else {
+                        alert("Title and Description are required");
+                    }
+                }}
+            > Add a Todo
             </button>
         </div>
     )

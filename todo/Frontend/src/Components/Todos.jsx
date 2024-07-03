@@ -1,18 +1,26 @@
 
-export function Todos({ todos }) {
+export function Todos({ todos, onComplete }) {
 
     return <div>
         {todos.map(function (todo) {
-            return <div>
-                <h1>{todo.title}</h1>
-                <h2>{todo.description}</h2>
-                <button>
-                    {todo.completed == true ? "Completed" : "Mark as Complete"}
+            return (
+                <div key={todo._id}>
+                    <h1>{todo.title}</h1>
+                    <h2>{todo.description}</h2>
+                    <button onClick={() => onComplete(todo._id) }>
+                        {todo.completed === true ? "Completed" : "Mark as Complete"}
                     </button>
-            </div>
+                </div>
+            );
         })}
     </div>
 }
+
+function onComplete(id) {
+
+
+}
+
 //map function above is same just instead of calling two functions for map and then render , a short way is bring used
 // return todos.map(renderTodo);
 // }
