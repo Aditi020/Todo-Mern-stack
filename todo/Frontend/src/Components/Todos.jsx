@@ -17,10 +17,6 @@ export function Todos({ todos, onComplete }) {
     </div>
 }
 
-function onComplete(id) {
-
-
-}
 
 //map function above is same just instead of calling two functions for map and then render , a short way is bring used
 // return todos.map(renderTodo);
