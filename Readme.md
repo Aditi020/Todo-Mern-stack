@@ -145,4 +145,3 @@ If you want to use React for the frontend, you can follow these steps:
 6. Once the server is running, you can open your web browser and access the development environment.
 ```
 
-By combining the content from both readme.md files, this new readme.md provides a comprehensive overview of the MERN TODO List App, including setup instructions, usage guidance, prerequisites, and the libraries used in the project.  
