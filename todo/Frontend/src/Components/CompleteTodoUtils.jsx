@@ -17,6 +17,9 @@ const handleTodoCompletion = async (id, setTodos) => {
     } catch (error) {
         console.error('Error marking todo as completed:', error);
     }
+    // 
 };
 
 export { handleTodoCompletion };
+
+// todo mark as completed, then show that specific todo as marked and crossed through, and in setTodo delete that specific todo.

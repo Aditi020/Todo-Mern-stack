@@ -1,37 +1,13 @@
-import { useState } from 'react'
-import { useEffect } from 'react'
-// import axios from 'axios';
 import './App.css'
 import { CreateTodo } from './Components/CreateTodo'
-import { Todos } from './Components/Todos'
-import { handleTodoCompletion } from './Components/CompleteTodoUtils'
+import { FetchTodo } from './Components/FetchTodo'
 
 function App() {
-  const [todos, setTodos] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/todos")
-      .then(async function (res) {
-        if (!res.ok) {
-          throw new Error("Failed to fetch todos");
-        }
-        const json = await res.json();
-        setTodos(json);
-      })
-      .catch((error) => {
-        console.error("Error fetching todos:", error);
-      });
-  },[todos]);
-
-  // useEffect is divided into two parts
-  // 1st is a function(),2nd [] this in the useEffect is a Dependency array
-
+ 
   return (
     <div>
       <CreateTodo />
-      <Todos todos={todos} onComplete={handleTodoCompletion} />
-      {/* {todos.map(todo => ( 
-        <Todos key={todo._id} todo={todo} />))} */}
+      <FetchTodo/>
     </div>
   )
 }

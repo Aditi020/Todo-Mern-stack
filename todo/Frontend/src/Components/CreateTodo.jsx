@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
+// import "./Todo.css"
 
 export function CreateTodo() {
 
@@ -7,17 +8,18 @@ export function CreateTodo() {
     const [description, setDescription] = useState("");
 
     return (
-        <div>
-            <input id="title" style={{                 //Adding CSS inlined
+        <div className="Todo">
+            <input id="title" className="Todo-title" 
+            style={{ //Adding CSS inlined
                 padding: 10,
-                margin: 10
-            }}
+                margin: 10 
+                    }}
                 type="text" placeholder="Title" onChange={function (e) {
                     const value = e.target.value;
                     setTitle(value);
                 }}></input> <br />
 
-            <input id="description" style={{
+            <input id="description" className="Todo-description" style={{
                 padding: 10,
                 margin: 10
             }}
@@ -27,7 +29,7 @@ export function CreateTodo() {
                 }}
             ></input><br />
 
-            <button style={{
+            <button className="btn" style={{
                 padding: 10,
                 margin: 10
             }}
