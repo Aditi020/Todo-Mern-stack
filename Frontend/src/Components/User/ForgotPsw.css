@@ -1,0 +1,73 @@
+.forgotpsw-page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.forgotpsw-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 10px;
+    margin-top:-10%;
+}
+
+.forgotpsw-title {
+    font-size: 2rem;
+    color: #e84a5f;
+    margin-bottom: 20px;
+}
+
+.forgotpsw-group {
+    margin-bottom: 20px;
+}
+
+.forgotpsw-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.forgotpsw-btn {
+    background-color: #e84a5f;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.forgotpsw-btn:hover {
+    background-color: #c73e4f;
+}
+
+.forgotpsw-message {
+    margin-bottom: 20px;
+    color: green;
+}
+
+.back-to-signin {
+    color: #e84a5f;
+    text-decoration: none;
+}
+
+.back-to-signin:hover {
+    text-decoration: underline;
+}
+
+.redirect-link {
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+    color: #e84a5f;
+}

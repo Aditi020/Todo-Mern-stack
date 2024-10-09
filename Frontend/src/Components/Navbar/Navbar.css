@@ -1,0 +1,45 @@
+.NavLin{
+    margin-top: 5px !important;
+    font-weight: 400    !important;
+    font-size: 17px !important;
+    color: #000 !important;
+}
+
+.Nav-icon {
+    color: #e84a5f !important;
+    font-weight: bold;
+    font-size: 25px;
+    /* filter: invert(47%) sepia(85%) saturate(326%) hue-rotate(327deg) brightness(95%) contrast(101%); */
+}
+
+.Nav-icon:hover {
+    color: #ff847c !important;
+}
+
+.nav-btn{
+background-color: #e84a5f   !important;
+color: white;
+padding: 3px 8px;
+font-size: 14px;
+margin: 0;
+border-radius: 10px;
+border: none !important;
+    transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+    background-color: #f5665c !important;
+    transform: scale(1.05);
+}
+
+.Nav-W{
+    font-size: 10px;
+    font-weight: bold;
+}
+
+img {
+    display: flex;
+    align-items: center;
+    height: 22px;
+    margin-top: 10px !important;
+}

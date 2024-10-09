@@ -1,0 +1,55 @@
+.custom-footer {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 15px 0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    margin-left: 8%;
+}
+
+.footer-icon {
+    margin-right: 10px;
+    
+}
+
+.footer-brand-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e84a5f !important;
+}
+
+.footer-copyright {
+    text-align: center;
+    flex-grow: 1;
+    font-size: 14px;
+    margin-bottom: -5px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-link {
+    text-decoration: none;
+    color: #252525 !important;
+    font-size: 14px;
+    transition: color 0.3s ease;
+    font: 0.8em sans-serif;
+}
+
+.footer-link:hover {
+    color: #0056b3 !important;
+}
