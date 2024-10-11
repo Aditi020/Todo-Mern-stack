@@ -1,55 +1,85 @@
-.custom-footer {
-    width: 100%;
-    background-color: #f8f9fa;
-    padding: 15px 0;
+.footer {
+    background-color: #37373b;
 }
 
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: center;
-    margin-left: 8%;
-}
-
-.footer-icon {
-    margin-right: 10px;
-    
-}
-
-.footer-brand-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #e84a5f !important;
-}
-
-.footer-copyright {
-    text-align: center;
-    flex-grow: 1;
-    font-size: 14px;
-    margin-bottom: -5px;
+.footer-padding {
+    padding: 0rem 2rem;
+    /* Reduced padding for a compact footer */
 }
 
 .footer-links {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    /* Adjusted margin for a tighter fit */
 }
 
-.footer-link {
+.footerlinksdiv {
+    width: 140px;
+    /* Reduced width for a more compact look */
+    margin: 0.2rem;
+    /* Reduced margin for a tighter layout */
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin-bottom: -20px;
+}
+
+.footerlinksdiv a {
+    color: rgb(175, 175, 179);
     text-decoration: none;
-    color: #252525 !important;
-    font-size: 14px;
-    transition: color 0.3s ease;
-    font: 0.8em sans-serif;
 }
 
-.footer-link:hover {
-    color: #0056b3 !important;
+.footerlinksdiv h4 {
+    font-size: 20px;
+    /* Reduced font size */
+    line-height: 1.5;
+    margin-bottom: 0.rem;
+    /* Adjusted margin */
+    padding-top: 20px;
+}
+
+.footerlinksdiv p {
+    font-size: 14px;
+    /* Reduced font size */
+    line-height: 1.5;
+    padding: 0.1rem 0;
+    /* Reduced padding */
+}
+
+.socialmedia {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between ;
+}
+
+.footer-below {
+    display: flex;
+    justify-content: center;
+    /* Center the copyright text */
+    margin-top: 0.5rem;
+    /* Adjusted margin for spacing */
+}
+
+
+.footer-copyright {
+    font-size: 12px;
+    /* Reduced font size */
+    color: white;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 550px) {
+    .footerlinksdiv h4 {
+        font-size: 18px;
+        /* Further reduce for smaller screens */
+    }
+
+    .footerlinksdiv p {
+        font-size: 12px;
+        /* Further reduce for smaller screens */
+    }
 }

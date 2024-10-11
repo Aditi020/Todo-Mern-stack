@@ -1,10 +1,10 @@
 import RouteConfig from './Route'; // Importing RouteConfig
 import Navbar from './Components/Navbar/Navbar';
 import Footer from './Components/Footer/Footer';
-
+import "./App.css"
 function App() {
   return (
-    <div>
+    <div className='App'>
       <Navbar />  
       <RouteConfig />
       <Footer />  
