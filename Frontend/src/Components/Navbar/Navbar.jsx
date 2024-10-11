@@ -43,7 +43,7 @@ function CustomNavbar() {
                             </Button>
                         </Nav.Link>
                         <Nav.Link as={Link} to="/logout"  className="mx-1">
-                            <Button className='nav-btn'>
+                            <Button className='nav-btn' >
                                 Logout
                             </Button>
                         </Nav.Link>

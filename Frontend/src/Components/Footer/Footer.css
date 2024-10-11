@@ -1,10 +1,16 @@
 .footer {
     background-color: #37373b;
+    width: 100%;
+    margin-top: auto;
+    /* Ensures the footer pushes to the bottom */
+    /* padding: 1rem 0 0; */
+/* position: fixed; */
+bottom: 0;
+    /* Optional: For styling purposes */
 }
 
 .footer-padding {
     padding: 0rem 2rem;
-    /* Reduced padding for a compact footer */
 }
 
 .footer-links {
@@ -14,8 +20,8 @@
     flex-wrap: wrap;
     width: 100%;
     margin-bottom: 1.5rem;
-    /* Adjusted margin for a tighter fit */
 }
+
 
 .footerlinksdiv {
     width: 140px;
@@ -37,7 +43,7 @@
     font-size: 20px;
     /* Reduced font size */
     line-height: 1.5;
-    margin-bottom: 0.rem;
+    /* margin-bottom: 0.rem; */
     /* Adjusted margin */
     padding-top: 20px;
 }
@@ -55,31 +61,40 @@
     flex-direction: row;
     justify-content: space-between ;
 }
-
 .footer-below {
-    display: flex;
-    justify-content: center;
-    /* Center the copyright text */
-    margin-top: 0.5rem;
-    /* Adjusted margin for spacing */
+    text-align: center;
+    
 }
-
 
 .footer-copyright {
     font-size: 12px;
-    /* Reduced font size */
     color: white;
 }
 
+
 /* Responsive Styles */
-@media screen and (max-width: 550px) {
+@media (max-width: 760px) {
     .footerlinksdiv h4 {
         font-size: 18px;
         /* Further reduce for smaller screens */
     }
-
+.footer-padding {
+    padding: 0rem 2rem;
+}
     .footerlinksdiv p {
         font-size: 12px;
         /* Further reduce for smaller screens */
     }
+        .footer {
+            background-color: #37373b;
+            width: 120%;
+            margin-top: auto;
+            /* Ensures the footer pushes to the bottom */
+            padding: 1rem  0;
+            position: relative;
+             /* position: fixed; */
+            Bottom: 0; 
+            padding-right: 2rem;
+            /* Optional: For styling purposes */
+        }
 }

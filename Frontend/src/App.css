@@ -1,6 +1,29 @@
+body,
+#root,
+.App {
+    height: 100%;
+    margin: 0;
+}
+
+/* Ensure the App takes the full viewport height and allows content to grow */
+.App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Takes the full viewport height */
+}
+
+.main {
+    flex-grow: 1;
+    /* Allow the main content to grow and take up available space */
+    padding-bottom: 20px;
+    /* Add padding to prevent the content from touching the footer */
+}
+
+
 @media (max-width: 780px) {
 .App{
     margin-right: -80px;
-}
 
+}
 }
