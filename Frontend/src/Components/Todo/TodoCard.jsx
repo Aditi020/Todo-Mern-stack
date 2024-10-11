@@ -6,9 +6,11 @@ const TodoCard = ({ title, body }) => {
     <Card body className='Card'>
       <CardTitle tag="h5">{title}</CardTitle>
       <CardText>{body}</CardText>
-      <Button>Mark as completed</Button>
+      <Row>
+     <Col ><Button className='Fun-btn'> Edit Todo</Button></Col>
+        <Col > <Button className='Fun-btn'>Delete Todo</Button></Col> 
+      </Row>
     </Card>
   );
 };
-
 export default TodoCard;

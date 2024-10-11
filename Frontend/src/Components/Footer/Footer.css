@@ -91,7 +91,7 @@ bottom: 0;
             margin-top: auto;
             /* Ensures the footer pushes to the bottom */
             padding: 1rem  0;
-            position: relative;
+            margin-bottom: -23%;
              /* position: fixed; */
             Bottom: 0; 
             padding-right: 2rem;

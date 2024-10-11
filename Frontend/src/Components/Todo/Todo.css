@@ -103,6 +103,7 @@
     display: flex;
     margin-left: 10%;
     margin-top: 50px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
         /* Allow cards to wrap to the next line */
         flex: 1;
@@ -113,7 +114,7 @@
     display: flex;
     flex: 1;
     flex-wrap: wrap;
-    justify-content: center;
+    /* justify-content: center; */
     /* Ensure items wrap to the next line if necessary */
 }
 
@@ -123,6 +124,27 @@
     height: 50%;
     flex:1;
     /* Add some margin around the card for spacing */
+}
+
+
+.Fun-btn{
+    /* margin-left: 20px; */
+    width: 95%;
+    height: 35px;
+
+}
+
+.Fun-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Active state (on click) */
+.Fun-btn:active {
+    background-color: #1e7e34;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
 }
 
 /* Responsive Styling */
