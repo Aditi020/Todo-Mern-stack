@@ -43,3 +43,15 @@ img {
     height: 22px;
     margin-top: 10px !important;
 }
+
+.navbar-collapse {
+    max-height: fit-content;
+    /* Allows the navbar to expand based on content */
+    transition: max-height 0.3s ease;
+    /* Smooth transition */
+}
+
+.navbar {
+    margin-bottom: 20px;
+    /* Add space below the navbar */
+}

@@ -71,3 +71,12 @@
     margin-top: 20px;
     color: #e84a5f;
 }
+
+ .error {
+     color: red;
+     /* Change to your preferred error color */
+     font-size: 0.8rem;
+     /* Adjust font size */
+     margin-top: 0.25rem;
+     /* Add some space above the error message */
+ }

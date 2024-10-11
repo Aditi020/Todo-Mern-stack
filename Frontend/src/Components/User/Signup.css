@@ -70,3 +70,25 @@
     color: #e84a5f;
     font-size: 2rem;
 }
+
+ .error {
+    color: red;
+    /* Change to your preferred error color */
+    font-size: 0.8rem;
+    /* Adjust font size */
+    margin-top: 0.25rem;
+    /* Add some space above the error message */
+} 
+@media (max-width: 960px) {
+    .signup-page .hide-on-small-screen {
+        display: none !important;
+        /* Forcefully hide the element */
+    }
+}
+
+@media (max-width:960px) and (min-width:778px) {
+    .form-container {
+        width: 120%;
+        margin-left: -10%;
+    }
+}

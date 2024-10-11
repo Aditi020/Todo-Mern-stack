@@ -59,3 +59,6 @@ function CustomNavbar() {
 }
 
 export default CustomNavbar;
+
+
+// Navbar in phone size is trouble
