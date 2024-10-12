@@ -6,7 +6,9 @@ function App() {
   return (
     <div className='App'>
       <Navbar />  
-      <RouteConfig className="main"/>
+      <main>
+      <RouteConfig />
+      </main>
       <Footer />  
     </div>
   );

@@ -1,7 +1,8 @@
 .todo {
     width: 100%;
-    /* height: 100vh; */
-    flex:1;
+    height: 100vh !important;
+    
+    /* flex:1; */
     display: flex;
         flex-direction: column;
 }
@@ -12,7 +13,7 @@
     background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.30);
+    box-shadow: 0 4px 12px rgba(111, 31, 31, 0.3);
     border: 1px solid #c3bebe;
     width: 100%;
     max-width: 500px;
@@ -80,10 +81,43 @@
 
 /* Active state (on click) */
 .Add-btn:active {
-    background-color: #1e7e34;
+    background-color: #7e3e1e;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(1px);
 }
+
+ .Update-btn {
+    background-color: #878c88;
+        color: white;
+        padding: 6px 25px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        /* margin-top: 10px; */
+        margin-left: 52%;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        /* Add margin to the top */
+        transition: all 0.3s ease;
+        align-self: flex-start;
+ }
+
+
+.Cancel-btn {
+  background-color: red;
+  color: white;
+  margin-left: 10px;
+  font-size: 15px;
+        padding: 6px 25px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.Cancel-btn:hover {
+  background-color: darkred;
+}
+
 
 /* Fade-in animation */
 @keyframes fadeIn {
@@ -107,6 +141,7 @@
     flex-wrap: wrap;
         /* Allow cards to wrap to the next line */
         flex: 1;
+        display: flex;
         /* Allow this section to grow */
 }
 
@@ -122,16 +157,27 @@
     margin: 10px;
     width: 90%;
     height: 50%;
-    flex:1;
+    flex:1 ;
     /* Add some margin around the card for spacing */
 }
 
-
-.Fun-btn{
-    /* margin-left: 20px; */
-    width: 95%;
-    height: 35px;
-
+.Fun-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    /* Gap between the text and icon inside the button */
+    width: 100%;
+    /* Full width of the parent container (Col) */
+    padding: 10px 15px;
+    /* Adjust padding for a larger button */
+    font-size: 16px;
+    background-color: #878c88;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .Fun-btn:hover {
@@ -140,18 +186,38 @@
     transform: translateY(-2px);
 }
 
-/* Active state (on click) */
 .Fun-btn:active {
     background-color: #1e7e34;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(1px);
 }
 
+/* Increase the size of the delete icon */
+.Fun-btn .ri-delete-back2-line {
+    font-size: 20px;
+    margin-left: 0.5rem;
+    /* Adjust icon size */
+}
+
+.Fun-btn .FiEdit-line{
+    margin-left: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+/* Add gap between the buttons */
+.Row {
+    gap: 10px;
+    /* Space between the buttons */
+}
+
 /* Responsive Styling */
 @media (max-width: 768px) {
-    .todo-main-container {
+   
+   
+    .todo-main {
         padding: 20px;
-        width: 70%;
+        width: 100%;
+        max-width: 330px ;
         /* Ensure it still takes the full width */
         justify-content: center;
         margin-left: 15%;
@@ -174,10 +240,18 @@
     .Add-btn {
         font-size: 14px; /* Smaller font size on smaller screens */
         padding: 8px 18px; /* Reduced padding */
-        margin-top: 0px;
-            margin-left: 69%;
+        margin-top: -23px;
+            margin-left: 72%;
     }
 
+        .Update-btn{
+            margin-left: 68%;
+            font-size: 14px;
+                /* Smaller font size on smaller screens */
+                padding: 8px 18px;
+                /* Reduced padding */
+                margin-top: -23px;
+        }
 .Todo-body {
     display: flex;
     margin-left: 10%;
@@ -203,11 +277,75 @@
     flex: 1;
     /* Add some margin around the card for spacing */
 }
+.Del-btn{
+    width: 110%;
+    margin-left: -10px;
+}
+.btn-content{
+    font-size: 15px;
+    /* display: flex; */
+    padding: 0.05rem 0;
+}
+
+.Fun-btn:hover {
+    background-color: #c96146;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.Fun-btn:active {
+    background-color: #c96146;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
+}
+
+/* Increase the size of the delete icon */
+.Fun-btn .ri-delete-back2-line {
+    font-size: 20px;
+    margin-left: 0.5rem;
+    /* Adjust icon size */
+}
+
+.Fun-btn .FiEdit-line {
+    /* margin-left: 0.5rem; */
+    padding-bottom: 1rem;
+}
+ .Update-btn {
+     background-color: #878c88;
+     color: white;
+     padding: 5px 15px;
+     font-size: 16px;
+     border: none;
+     border-radius: 8px;
+     cursor: pointer;
+     /* margin-top: 10px; */
+     margin-left: 45%;
+     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+     /* Add margin to the top */
+     transition: all 0.3s ease;
+     align-self: flex-start;
+ }
+
+
+ .Cancel-btn {
+     background-color: red;
+     color: white;
+     margin-top: -23px;
+     font-size: 15px;
+     padding: 6px 15px;
+     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+     border-radius: 8px;
+     cursor: pointer;
+ }
+
+ .Cancel-btn:hover {
+     background-color: darkred;
+ }
 
 }
 
 @media (max-width: 480px) {
-    .todo-main-container {
+    .todo-main {
         padding: 15px;
         justify-content: center;
         margin-right: 40%;

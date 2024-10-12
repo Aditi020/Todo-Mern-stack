@@ -42,7 +42,7 @@ const Footer = () => {
 
         <div className="footer-below">
           <div className="footer-copyright">
-            <p>© {new Date().getFullYear()} Your Todo App. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Aditi. All rights reserved.</p>
           </div>
         </div>
       </div>
