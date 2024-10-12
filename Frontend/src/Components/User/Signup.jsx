@@ -2,45 +2,62 @@ import React, { useState } from 'react';
 import { Col, Row, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './Signup.css';
+import axios from 'axios';
 
 const Signup = () => {
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [errors, setErrors] = useState({}); // To store validation errors
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+
+    const [errors, setErrors] = useState({});
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     const validateForm = () => {
         const newErrors = {};
-        // Full Name validation (must contain only letters and spaces)
-        if (!/^[a-zA-Z\s]+$/.test(fullName)) {
-            newErrors.fullName = "Full Name must contain only letters and spaces.";
+        if (!/^[a-zA-Z\s]+$/.test(formData.username)) {
+            newErrors.username = "Full Name must contain only letters and spaces.";
         }
-        // Email validation
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             newErrors.email = "Email must follow the correct email format.";
         }
-        // Password validation (simple criteria: at least 6 characters)
-        if (password.length < 6) {
+        if (formData.password.length < 6) {
             newErrors.password = "Password must be at least 6 characters long.";
         }
-        // Confirm Password validation
-        if (password !== confirmPassword) {
+        if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = "Passwords do not match.";
         }
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const validationErrors = validateForm();
-        console.log("Validation Errors: ", validationErrors); // Debugging line
         if (Object.keys(validationErrors).length === 0) {
-            // Submit the form if there are no validation errors
-            console.log("Form submitted successfully");
-            // You can add the API call for signup here
+            try {
+                const response = await axios.post('http://localhost:3000/api/user/register', formData);
+                console.log(response);
+                setFormData({
+                    username: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: '',
+                });
+                setErrors({});
+            } catch (error) {
+                console.error("There was an error registering the user:", error);
+            }
         } else {
-            setErrors(validationErrors); // Update state with validation errors
+            setErrors(validationErrors);
         }
     };
 
@@ -48,8 +65,11 @@ const Signup = () => {
         <div className="signup-page d-flex justify-content-center align-items-center">
             <Container className="signup-container">
                 <Row>
-                    <Col lg="6" md="6" sm="12" className="d-flex align-items-center justify-content-center hide-on-small-screen">
-                        <h1 className="signin-title">SIGN-UP</h1>
+                    <Col
+                        lg="6" 
+                        className="Side-section d-none d-md-flex align-items-center justify-content-center" 
+                    >
+                        <h1 className="signup-title">SIGN-UP</h1>
                         <div className="vertical-line"></div>
                     </Col>
 
@@ -61,40 +81,44 @@ const Signup = () => {
                                     <div className="form__group">
                                         <input
                                             type="text"
+                                            name="username"
                                             placeholder="Full Name"
                                             className="form__input"
-                                            value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
+                                            value={formData.username}
+                                            onChange={handleInputChange}
                                         />
-                                        {errors.fullName && <span className="error">{errors.fullName}</span>}
+                                        {errors.username && <span className="error">{errors.username}</span>}
                                     </div>
                                     <div className="form__group">
                                         <input
                                             type="email"
+                                            name="email"
                                             placeholder="Email"
                                             className="form__input"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={formData.email}
+                                            onChange={handleInputChange}
                                         />
                                         {errors.email && <span className="error">{errors.email}</span>}
                                     </div>
                                     <div className="form__group">
                                         <input
                                             type="password"
+                                            name="password"
                                             placeholder="Password"
                                             className="form__input"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            value={formData.password}
+                                            onChange={handleInputChange}
                                         />
                                         {errors.password && <span className="error">{errors.password}</span>}
                                     </div>
                                     <div className="form__group">
                                         <input
                                             type="password"
+                                            name="confirmPassword"
                                             placeholder="Confirm Password"
                                             className="form__input"
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            value={formData.confirmPassword}
+                                            onChange={handleInputChange}
                                         />
                                         {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                                     </div>

@@ -27,7 +27,7 @@ router.delete("/profile/delete", userMiddleware, deleteUserProfile);
 router.put("/profile/change-password", userMiddleware, changeUserPassword);
 
 // Todo routes with authentication middleware
-router.post("/todos", userMiddleware, createTodo); 
+router.post("/todos", userMiddleware, createTodo);
 router.put("/todos/:id", userMiddleware, updateTodo);
 router.put("/todos/:id/completed", userMiddleware, deleteTodo);
 router.get("/profile/todos", userMiddleware, getUserTodos);

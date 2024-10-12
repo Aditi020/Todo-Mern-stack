@@ -1,16 +1,32 @@
+/* Signin.css */
+
 .signin-page {
     width: 100%;
     height: 100vh;
-    margin-top: -20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: opacity 0.5s ease-in-out;
+    /* Transition effect for the page */
 }
 
-.signin-container {
-    width: 100%;
-    max-width: 1200px;
+.signin-page.fade-out {
+    opacity: 0;
+    /* Fade-out effect */
+}
+
+.form-container {
+    max-width: 400px;
+    /* Default width */
+    margin: 0 auto;
+    /* Center it horizontally */
     padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: -70px;
+    /* Default position from top */
 }
 
 .signin-title {
@@ -21,10 +37,13 @@
     transform: translateX(-50%);
     color: #e84a5f;
     font-weight: 800;
+    margin-top: -40px;
+    /* Adjust margin as needed */
 }
 
 .form__group {
     margin-bottom: 20px;
+    /* Spacing between form groups */
 }
 
 .form__input {
@@ -35,6 +54,7 @@
 
 .signin-btn {
     background-color: #e84a5f;
+    /* Primary button color */
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -46,6 +66,7 @@
 
 .signin-btn:hover {
     background-color: #c73e4f;
+    /* Button hover effect */
 }
 
 .redirect-link {
@@ -53,44 +74,87 @@
     display: block;
     margin-top: 20px;
     color: #e84a5f;
+    /* Redirect link color */
 }
 
 .vertical-line {
     width: 1px;
     background-color: #ddd;
+    /* Line color */
     height: 70%;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 45%;
-    /* Adjusts the position of the vertical line */
 }
 
-.form__title{
+.form__title {
     color: #e84a5f;
-    font-size: 2rem;;
+    /* Title color */
+    font-size: 2rem;
 }
 
- .error {
-     color: red;
-     /* Change to your preferred error color */
-     font-size: 0.8rem;
-     /* Adjust font size */
-     margin-top: 0.25rem;
-     /* Add some space above the error message */
- }
+.error {
+    color: red;
+    /* Error text color */
+    font-size: 0.8rem;
+    /* Adjust font size */
+    margin-top: 0.25rem;
+    /* Spacing above the error message */
+}
 
+/* Media Queries for responsive design */
+/* Hide the title and vertical line on smaller screens */
 @media (max-width: 960px) {
-    .signin-page .hide-on-small-screen {
-        display: none !important;
-        /* Forcefully hide the element */
+    .hide-on-small-screen {
+        display: none;
+        /* Hide the title and vertical line */
+    }
+
+    .signin-page {
+        padding-top: 40px;
+        /* Move container 40px from the top */
+    }
+
+    .signin-container {
+        max-width: 80%;
+        /* Widen the form container */
+    }
+
+    .form-container {
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+
+    .form-container {
+        width: 100%;
+        /* Take full width */
+        max-width: 500px;
+        /* Limit the maximum width */
+        margin: 0 auto;
+        /* Center the form */
+        padding: 20px;
+        /* Add padding for a clean look */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        /* Add subtle shadow for emphasis */
     }
 }
 
-@media (max-width:960px) and (min-width:778px) 
-{
-.form-container{
-    width: 120%;
-    margin-left: -10%;
-}
+/* Further adjustments for smaller mobile screens */
+@media (max-width: 768px) {
+    .form-container {
+        width: 100%;
+        max-width: 500px;
+        /* Smaller width for better mobile experience */
+        padding: 15px;
+        /* Slightly less padding */
+        margin: 0 auto;
+        /* Centered horizontally */
+    }
+
+    .signin-page {
+        padding: 0 10px;
+        /* Padding around the edges */
+    }
 }

@@ -55,3 +55,13 @@ img {
     margin-bottom: 20px;
     /* Add space below the navbar */
 }
+
+@media (max-width: 980px) {
+    .Nav-icon {
+            color: #e84a5f !important;
+            font-weight: bold;
+            font-size: 25px;
+            margin-left: 20px;
+            /* filter: invert(47%) sepia(85%) saturate(326%) hue-rotate(327deg) brightness(95%) contrast(101%); */
+        }
+}

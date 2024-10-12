@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node server.js --prefix Backend"
+    "server": "node server.js --prefix Backend",
+    "start": "nodemon server.js"
   },
   "author": "Aditi Kumar",
   "license": "ISC",
@@ -16,5 +17,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
