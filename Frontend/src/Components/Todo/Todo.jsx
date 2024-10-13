@@ -9,11 +9,10 @@ import axios from 'axios';
 const Todo = () => {
   const [showTextarea, setShowTextarea] = useState(false);
   const [inputs, setInputs] = useState({ title: '', body: '' });
-  const [todos, setTodos] = useState([]); // Public todos
   const [userTodos, setUserTodos] = useState([]); // User-specific todos
   const [editIndex, setEditIndex] = useState(null); // Track the index of the item being edited
+  const [currentTodoId, setCurrentTodoId] = useState(null); // To store the ID of the todo being edited
   const token = sessionStorage.getItem('token'); // Get the token from session storage
-  const userId = sessionStorage.getItem('id'); // Get the user ID from session storage
 
   useEffect(() => {
     // Fetch user todos if logged in
@@ -26,11 +25,10 @@ const Todo = () => {
     try {
       const response = await axios.get(`http://localhost:3000/api/user/profile/todos`, {
         headers: {
-          'Authorization': `Bearer ${token}`, // Use token for authorization
+          'Authorization': `Bearer ${token}`,
         },
       });
       setUserTodos(response.data.todos); // Set the fetched user todos
-      setTodos([]); // Clear public todos upon sign in
     } catch (error) {
       console.error("Error fetching user todos:", error);
     }
@@ -44,7 +42,6 @@ const Todo = () => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
-
   const submit = async (e) => {
     e.preventDefault();
 
@@ -55,74 +52,103 @@ const Todo = () => {
 
     try {
       if (token) {
-        console.log(id.todo); // Debug check
+        if (editIndex !== null) {
+          // Editing an existing todo
+          const response = await axios.put(`http://localhost:3000/api/user/todos/${currentTodoId}`, {
+            title: inputs.title,
+            body: inputs.body,
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
 
-        // User is signed in, save the todo to the database
-        const response = await axios.post(`http://localhost:3000/api/user/todos`, {
-          title: inputs.title,
-          body: inputs.body,
-        }, {
-          headers: {
-            'Authorization': `Bearer ${token}`, // Use the JWT token for authorization
-          },
-        });
+          // Update the state with the edited todo
+          setUserTodos((prevTodos) =>
+            prevTodos.map((todo) =>
+              todo._id === currentTodoId ? response.data : todo
+            )
+          );
+          toast.success('Todo updated successfully!');
+        } else {
+          // User is signed in, save the todo to the database
+          const response = await axios.post(`http://localhost:3000/api/user/todos`, {
+            title: inputs.title,
+            body: inputs.body,
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
 
-        // Add the newly created todo to userTodos
-        setUserTodos([...userTodos, response.data]);
-        toast.success('Todo created successfully!');
+          // Add the newly created todo to userTodos
+          setUserTodos((prevTodos) => [...prevTodos, response.data]);
+          toast.success('Todo created successfully!');
+        }
       } else {
         toast.warn("Your task is not saved, please SignUp!");
-        // Add to public todos state
-        setTodos([...todos, inputs]);
-        toast.success('Todo created successfully!');
+        // Add to public todos state if needed
       }
 
-      // Clear the input fields and state
-      setInputs({ title: '', body: '' });
+      // Clear the input fields and reset state
+      setInputs({ title: '', body: '' }); // Clear the input fields after submission
       setShowTextarea(false);
-      setEditIndex(null); // Reset the edit state
+      setEditIndex(null);
+      setCurrentTodoId(null);
     } catch (error) {
-      console.error("Error creating todo:", error);
+      console.error("Error creating/updating todo:", error);
       if (error.response) {
-        console.error("Server responded with status:", error.response.status);
-        console.error("Response data:", error.response.data);
-        toast.error(`Failed to create todo: ${error.response.data.message || "An error occurred."}`);
+        toast.error(`Failed: ${error.response.data.message || "An error occurred."}`);
       } else {
-        toast.error("Failed to create todo. Network error.");
+        toast.error("Failed to create/update todo. Network error.");
       }
     }
   };
 
+
   const editTodo = (index) => {
-    const todoToEdit = userTodos[index] || todos[index];
+    const todoToEdit = userTodos[index];
     setInputs(todoToEdit); // Prefill the input fields with the selected Todo's data
     setShowTextarea(true);
     setEditIndex(index); // Set the index for the item being edited
+    setCurrentTodoId(todoToEdit._id); // Store the ID of the todo being edited
   };
 
   const cancelEdit = () => {
     setInputs({ title: '', body: '' });
     setShowTextarea(false);
     setEditIndex(null);
+    setCurrentTodoId(null);
   };
 
-  const deleteTodo = (index) => {
+  const deleteTodo = async (index) => {
+    const todoToDelete = userTodos[index];
     if (token) {
-      // Logic for deleting a user-specific todo
-      const updatedUserTodos = userTodos.filter((_, i) => i !== index);
-      setUserTodos(updatedUserTodos);
-      toast.error('User Todo deleted successfully!');
-    } else {
-      // Logic for deleting a public todo
-      const updatedTodos = todos.filter((_, i) => i !== index);
-      setTodos(updatedTodos);
-      toast.error('Todo deleted successfully!');
+      try {
+        await axios.delete(`http://localhost:3000/api/user/todos/${todoToDelete._id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        // Remove the deleted todo from state
+        setUserTodos((prevTodos) =>
+          prevTodos.filter((_, i) => i !== index)
+        );
+        toast.success('Todo deleted successfully!');
+      } catch (error) {
+        console.error("Error deleting todo:", error);
+        if (error.response) {
+          toast.error(`Failed to delete todo: ${error.response.data.message || "An error occurred."}`);
+        } else {
+          toast.error("Failed to delete todo. Network error.");
+        }
+      }
     }
   };
 
   const handleLogout = () => {
     sessionStorage.clear();
-    setTodos([]); // Clear public todos on logout
     setUserTodos([]); // Clear user todos on logout
   };
 
@@ -173,17 +199,8 @@ const Todo = () => {
 
       <div className='Todo-body'>
         <Row className="todo-list container">
-          {token ? userTodos.map((item, index) => (
-            <Col sm="6" md="4" key={index}>
-              <TodoCard
-                title={item.title}
-                body={item.body}
-                onEdit={() => editTodo(index)}
-                onDelete={() => deleteTodo(index)}
-              />
-            </Col>
-          )) : todos.map((item, index) => (
-            <Col sm="6" md="4" key={index}>
+          {userTodos.map((item, index) => (
+            <Col sm="6" md="4" key={item._id}>
               <TodoCard
                 title={item.title}
                 body={item.body}
