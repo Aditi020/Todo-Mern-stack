@@ -12,20 +12,21 @@ const Todo = () => {
   const [todos, setTodos] = useState([]); // Public todos
   const [userTodos, setUserTodos] = useState([]); // User-specific todos
   const [editIndex, setEditIndex] = useState(null); // Track the index of the item being edited
-  const id = sessionStorage.getItem('id');
+  const token = sessionStorage.getItem('token'); // Get the token from session storage
+  const userId = sessionStorage.getItem('id'); // Get the user ID from session storage
 
   useEffect(() => {
     // Fetch user todos if logged in
-    if (id) {
+    if (token && userId) {
       fetchUserTodos();
     }
-  }, [id]);
+  }, [token, userId]);
 
   const fetchUserTodos = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/user/profile/todos", {
+      const response = await axios.get(`http://localhost:3000/api/profile/${userId}/todos`, {
         headers: {
-          'Authorization': `Bearer ${id}`, // Assuming your token is stored in sessionStorage
+          'Authorization': `Bearer ${token}`, // Use token for authorization
         },
       });
       setUserTodos(response.data.todos); // Set the fetched user todos
@@ -48,34 +49,41 @@ const Todo = () => {
     e.preventDefault();
 
     if (!inputs.title || !inputs.body) {
-      alert('Both fields are required');
+      toast.warn('Both fields are required');
       return;
     }
 
-    if (id) {
-      await axios.post("http://localhost:3000/api/user/todos", {
-        title: inputs.title,
-        body: inputs.body,
-      }).then((response) => {
-        console.log(response);
-        setUserTodos([...userTodos, response.data]); // Add to user todos
-        toast.success('Todo created successfully!');
-      }).catch((error) => {
-        console.error("Error creating todo:", error);
-        toast.error("Failed to create todo.");
-      });
-    } else {
-      // Show a notification for non-logged in users
-      toast.warn("Your task is not saved, please SignUp!");
-      // Add to public todos state
-      setTodos([...todos, inputs]);
-      console.log(inputs);
-      toast.success('Todo created successfully!');
-    }
+    try {
+      if (token && userId) {
+        // User is signed in, save the todo to the database with userId
+        const response = await axios.post(`http://localhost:3000/api/todos`, {
+          title: inputs.title,
+          body: inputs.body,
+          userId: userId, // Use userId from session storage
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Use the JWT token for authorization
+          },
+        });
 
-    setInputs({ title: '', body: '' });
-    setShowTextarea(false);
-    setEditIndex(null); // Reset the edit state
+        // Add the newly created todo to userTodos
+        setUserTodos([...userTodos, response.data]);
+        toast.success('Todo created successfully!');
+      } else {
+        // Show a notification for non-logged in users
+        toast.warn("Your task is not saved, please SignUp!");
+        // Add to public todos state
+        setTodos([...todos, inputs]);
+        toast.success('Todo created successfully!');
+      }
+
+      setInputs({ title: '', body: '' });
+      setShowTextarea(false);
+      setEditIndex(null); // Reset the edit state
+    } catch (error) {
+      console.error("Error creating todo:", error);
+      toast.error("Failed to create todo.");
+    }
   };
 
   const editTodo = (index) => {
@@ -92,7 +100,7 @@ const Todo = () => {
   };
 
   const deleteTodo = (index) => {
-    if (id) {
+    if (token && userId) {
       // Logic for deleting a user-specific todo
       const updatedUserTodos = userTodos.filter((_, i) => i !== index);
       setUserTodos(updatedUserTodos);
@@ -158,7 +166,7 @@ const Todo = () => {
 
       <div className='Todo-body'>
         <Row className="todo-list container">
-          {id ? userTodos.map((item, index) => (
+          {token && userId ? userTodos.map((item, index) => (
             <Col sm="6" md="4" key={index}>
               <TodoCard
                 title={item.title}

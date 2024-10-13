@@ -12,7 +12,7 @@ import "./Navbar.css";
 function CustomNavbar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const isAuthenticated = sessionStorage.getItem('token') !== null;
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleNavbar = () => {
