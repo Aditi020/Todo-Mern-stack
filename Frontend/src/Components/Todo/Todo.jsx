@@ -42,6 +42,8 @@ const Todo = () => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
+ 
+ 
   const submit = async (e) => {
     e.preventDefault();
 
@@ -66,9 +68,12 @@ const Todo = () => {
           // Update the state with the edited todo
           setUserTodos((prevTodos) =>
             prevTodos.map((todo) =>
-              todo._id === currentTodoId ? response.data : todo
+              todo._id === currentTodoId ? { ...todo, title: inputs.title, body: inputs.body } : todo
             )
           );
+
+          // Optional: Set inputs to empty after successful update
+          // setInputs({ title: '', body: '' });
           toast.success('Todo updated successfully!');
         } else {
           // User is signed in, save the todo to the database
@@ -87,7 +92,7 @@ const Todo = () => {
         }
       } else {
         toast.warn("Your task is not saved, please SignUp!");
-        // Add to public todos state if needed
+        // Handle public todos here if needed
       }
 
       // Clear the input fields and reset state
@@ -104,6 +109,7 @@ const Todo = () => {
       }
     }
   };
+
 
 
   const editTodo = (index) => {
@@ -199,8 +205,17 @@ const Todo = () => {
 
       <div className='Todo-body'>
         <Row className="todo-list container">
-          {userTodos.map((item, index) => (
-            <Col sm="6" md="4" key={item._id}>
+          {token ? userTodos.map((item, index) => (
+            <Col sm="6" md="4" key={item._id}> {/* Using item's _id as the key */}
+              <TodoCard
+                title={item.title}
+                body={item.body}
+                onEdit={() => editTodo(index)}
+                onDelete={() => deleteTodo(index)}
+              />
+            </Col>
+          )) : todos.map((item, index) => (
+            <Col sm="6" md="4" key={index}>
               <TodoCard
                 title={item.title}
                 body={item.body}
@@ -209,6 +224,7 @@ const Todo = () => {
               />
             </Col>
           ))}
+
         </Row>
       </div>
     </div>
