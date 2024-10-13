@@ -10,6 +10,7 @@ const Todo = () => {
   const [showTextarea, setShowTextarea] = useState(false);
   const [inputs, setInputs] = useState({ title: '', body: '' });
   const [userTodos, setUserTodos] = useState([]); // User-specific todos
+  const [publicTodos, setPublicTodos] = useState([]); // Public todos for non-signed-in users
   const [editIndex, setEditIndex] = useState(null); // Track the index of the item being edited
   const [currentTodoId, setCurrentTodoId] = useState(null); // To store the ID of the todo being edited
   const token = sessionStorage.getItem('token'); // Get the token from session storage
@@ -42,8 +43,7 @@ const Todo = () => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
- 
- 
+
   const submit = async (e) => {
     e.preventDefault();
 
@@ -72,8 +72,6 @@ const Todo = () => {
             )
           );
 
-          // Optional: Set inputs to empty after successful update
-          // setInputs({ title: '', body: '' });
           toast.success('Todo updated successfully!');
         } else {
           // User is signed in, save the todo to the database
@@ -91,12 +89,13 @@ const Todo = () => {
           toast.success('Todo created successfully!');
         }
       } else {
-        toast.warn("Your task is not saved, please SignUp!");
-        // Handle public todos here if needed
+        // Add to public todos state
+        setPublicTodos((prevTodos) => [...prevTodos, inputs]);
+        toast.success('Todo created successfully!');
       }
 
       // Clear the input fields and reset state
-      setInputs({ title: '', body: '' }); // Clear the input fields after submission
+      setInputs({ title: '', body: '' });
       setShowTextarea(false);
       setEditIndex(null);
       setCurrentTodoId(null);
@@ -110,10 +109,8 @@ const Todo = () => {
     }
   };
 
-
-
   const editTodo = (index) => {
-    const todoToEdit = userTodos[index];
+    const todoToEdit = token ? userTodos[index] : publicTodos[index];
     setInputs(todoToEdit); // Prefill the input fields with the selected Todo's data
     setShowTextarea(true);
     setEditIndex(index); // Set the index for the item being edited
@@ -128,8 +125,8 @@ const Todo = () => {
   };
 
   const deleteTodo = async (index) => {
-    const todoToDelete = userTodos[index];
     if (token) {
+      const todoToDelete = userTodos[index];
       try {
         await axios.delete(`http://localhost:3000/api/user/todos/${todoToDelete._id}`, {
           headers: {
@@ -150,12 +147,19 @@ const Todo = () => {
           toast.error("Failed to delete todo. Network error.");
         }
       }
+    } else {
+      // Logic for deleting a public todo
+      setPublicTodos((prevTodos) =>
+        prevTodos.filter((_, i) => i !== index)
+      );
+      toast.success('Public Todo deleted successfully!');
     }
   };
 
   const handleLogout = () => {
     sessionStorage.clear();
     setUserTodos([]); // Clear user todos on logout
+    setPublicTodos([]); // Clear public todos on logout
   };
 
   return (
@@ -214,7 +218,7 @@ const Todo = () => {
                 onDelete={() => deleteTodo(index)}
               />
             </Col>
-          )) : todos.map((item, index) => (
+          )) : publicTodos.map((item, index) => (
             <Col sm="6" md="4" key={index}>
               <TodoCard
                 title={item.title}

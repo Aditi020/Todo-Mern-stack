@@ -37,7 +37,7 @@ function CustomNavbar() {
         <Navbar expand="lg" className={`custom-navbar ${isOpen ? 'open' : ''}`}>
             <Container>
                 <Navbar.Brand as={Link} to="/" className="Nav-icon">
-                    <FcTodoList size={30} style={{ marginRight: '12px' }} />
+                    <FcTodoList size={30} style={{ marginRight: '12px', filter: "invert(47%) sepia(85%) saturate(326%) hue-rotate(327deg) brightness(95%) contrast(101%)" }} />
                     <b>&nbsp; QuickList</b>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" onClick={toggleNavbar} style={{ border: "none" }} />
