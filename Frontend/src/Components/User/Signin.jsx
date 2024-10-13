@@ -1,11 +1,12 @@
+// components/Signin/Signin.jsx
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import Axios
-import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
-import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
-import { login } from '../../Store/Slice/UserSlice'; // Import the login action
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../Store/Slice/UserSlice';
 import './Signin.css';
 
 const Signin = () => {
@@ -14,7 +15,7 @@ const Signin = () => {
     const [error, setError] = useState('');
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
-    const dispatch = useDispatch(); // Initialize useDispatch
+    const dispatch = useDispatch();
 
     const validateForm = () => {
         const errors = {};
@@ -27,9 +28,9 @@ const Signin = () => {
         return errors;
     };
 
+    // components/Signin/Signin.jsx
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const validationErrors = validateForm();
         setFormErrors(validationErrors);
 
@@ -40,29 +41,27 @@ const Signin = () => {
                     password,
                 });
 
-                const data = response.data;
-
                 if (response.status === 200) {
-                    sessionStorage.setItem('token', data.token); // Store the token in Session Storage instead of localStorage
-                    sessionStorage.setItem('userId', data.userId); // Store the user ID in Session Storage
-                    // Dispatch the login action to the Redux store
-                    dispatch(login({ identifier:identifier })); // Use identifier from data or the input
+                    const data = response.data;
 
-                    // Show toast notification
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('userId', data.userId);
+
+                    dispatch(login({ identifier }));
+
                     toast.success("Welcome to QuicKList!", {
                         position: "top-right",
-                        autoClose: 1000, // Toast will automatically close after 3000 milliseconds
+                        autoClose: 1000,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
                         draggable: true,
-                        progress: undefined,
                     });
 
-                    // Wait for 3 seconds before redirecting to the todo page
+                    // Navigate to the Todo page after a short delay without reload
                     setTimeout(() => {
                         navigate('/todo');
-                    }, 1200); // Redirect after 3000 milliseconds (3 seconds)
+                    }, 1000);
                 } else {
                     setError(data.message || 'Failed to sign in');
                 }
@@ -71,6 +70,7 @@ const Signin = () => {
             }
         }
     };
+
 
     return (
         <div className="signin-page d-flex justify-content-center align-items-center">
@@ -107,9 +107,7 @@ const Signin = () => {
                                         />
                                         {formErrors.password && <span className="error">{formErrors.password}</span>}
                                     </div>
-                                    <button type="submit" className="signin-btn">
-                                        Sign In
-                                    </button>
+                                    <button type="submit" className="signin-btn" >Sign In</button>
                                 </form>
                                 <p className="form__text">
                                     <Link to="/signup" className="redirect-link">

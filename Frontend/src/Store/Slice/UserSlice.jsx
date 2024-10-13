@@ -1,5 +1,4 @@
-// store/Slice/UserSlice.jsx
-
+// Store/Slice/UserSlice.jsx
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -12,12 +11,12 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         login(state, action) {
-            state.identifier = action.payload.identifier; // Set identifier on login
-            state.isAuthenticated = true; // Set the user as authenticated
+            state.identifier = action.payload.identifier; // Store the identifier
+            state.isAuthenticated = true; // Set authenticated to true
         },
         logout(state) {
-            state.identifier = ''; // Reset the identifier
-            state.isAuthenticated = false; // Reset authentication state
+            state.identifier = ''; // Reset identifier
+            state.isAuthenticated = false; // Set authenticated to false
         },
     },
 });

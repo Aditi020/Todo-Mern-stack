@@ -63,7 +63,7 @@
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    margin-top: 18px;
+    /* margin-top: 10px; */
     margin-left: 60.5%;
 
     /* Add margin to the top */
@@ -219,7 +219,14 @@ font-size: 16px;
 /* Responsive Styling */
 
 
-
+@media (max-width:980px){
+    .Add-btn {
+        margin-left: 70%;
+    }
+    .Fun-btn{
+        margin-bottom: 5px;
+    }
+}
 
 
 @media (max-width: 768px) {
