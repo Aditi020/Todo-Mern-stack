@@ -16,6 +16,19 @@
     color: #ff847c !important;
 }
 
+.custom-navbar {
+    transition: opacity 0.3s ease-in-out;
+    /* Transition effect for opacity */
+}
+
+.fade-out {
+    opacity: 0;
+    /* Make the navbar transparent */
+    pointer-events: none;
+    /* Prevent interaction while fading out */
+}
+
+
 .nav-btn{
 background-color: #e84a5f   !important;
 color: white;
@@ -56,6 +69,8 @@ img {
     /* Add space below the navbar */
 }
 
+
+
 @media (max-width: 980px) {
     .Nav-icon {
             color: #e84a5f !important;
@@ -64,4 +79,20 @@ img {
             margin-left: 20px;
             /* filter: invert(47%) sepia(85%) saturate(326%) hue-rotate(327deg) brightness(95%) contrast(101%); */
         }
+                .nav-btn {
+                    background-color: #e84a5f !important;
+                    color: white;
+                    padding: 3px 8px;
+                    font-size: 14px;
+                    margin: 0;
+                    border-radius: 10px;
+                    border: none !important;
+                    transition: background-color 0.3s ease;
+                    margin-left: -5px;
+                }
+        
+                .nav-btn:hover {
+                    background-color: #f5665c !important;
+                    transform: scale(1.05);
+                }
 }

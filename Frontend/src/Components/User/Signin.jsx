@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import Axios
 import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
+import { login } from '../../Store/Slice/UserSlice'; // Import the login action
 import './Signin.css';
 
 const Signin = () => {
@@ -11,8 +13,8 @@ const Signin = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [formErrors, setFormErrors] = useState({});
-    const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch(); // Initialize useDispatch
 
     const validateForm = () => {
         const errors = {};
@@ -41,15 +43,26 @@ const Signin = () => {
                 const data = response.data;
 
                 if (response.status === 200) {
-                    localStorage.setItem('token', data.token); // Store the token
+                    sessionStorage.setItem('token', data.token); // Store the token in Session Storage instead of localStorage
+                    sessionStorage.setItem('userId', data.userId); // Store the user ID in Session Storage
+                    // Dispatch the login action to the Redux store
+                    dispatch(login({ identifier:identifier })); // Use identifier from data or the input
 
-                    // Set showToast to true to trigger toast notification
-                    setShowToast(true);
+                    // Show toast notification
+                    toast.success("Welcome to QuicKList!", {
+                        position: "top-right",
+                        autoClose: 1000, // Toast will automatically close after 3000 milliseconds
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
 
-                    // Wait for 3 seconds before redirecting to the home page
+                    // Wait for 3 seconds before redirecting to the todo page
                     setTimeout(() => {
-                        navigate('/home');
-                    }, 3000); // Redirect after 3000 milliseconds (3 seconds)
+                        navigate('/todo');
+                    }, 1200); // Redirect after 3000 milliseconds (3 seconds)
                 } else {
                     setError(data.message || 'Failed to sign in');
                 }
@@ -58,23 +71,6 @@ const Signin = () => {
             }
         }
     };
-
-    useEffect(() => {
-        if (showToast) {
-            toast.success("Welcome to QuicList!", {
-                position: "top-right",
-                autoClose: 2000, // Toast will automatically close after 3000 milliseconds
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-            // Reset showToast after displaying the toast
-            setShowToast(false);
-        }
-    }, [showToast]);
 
     return (
         <div className="signin-page d-flex justify-content-center align-items-center">
@@ -130,7 +126,6 @@ const Signin = () => {
                     </Col>
                 </Row>
             </Container>
-            {/* Render ToastContainer for notifications */}
             <ToastContainer />
         </div>
     );

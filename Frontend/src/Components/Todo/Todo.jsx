@@ -4,7 +4,7 @@ import TodoCard from './TodoCard.jsx';
 import { Row, Col } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+let session
 const Todo = () => {
   const [showTextarea, setShowTextarea] = useState(false);
   const [inputs, setInputs] = useState({ title: '', body: '' });
