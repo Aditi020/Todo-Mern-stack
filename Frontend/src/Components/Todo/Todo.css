@@ -118,6 +118,12 @@
   background-color: darkred;
 }
 
+.Fun-btn .btn-content {
+font-size: 16px;
+
+}
+
+
 
 /* Fade-in animation */
 @keyframes fadeIn {
@@ -165,7 +171,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 1px;
     /* Gap between the text and icon inside the button */
     width: 100%;
     /* Full width of the parent container (Col) */
@@ -206,11 +212,16 @@
 
 /* Add gap between the buttons */
 .Row {
-    gap: 10px;
+    gap: 1px !important;
     /* Space between the buttons */
 }
 
 /* Responsive Styling */
+
+
+
+
+
 @media (max-width: 768px) {
    
    
@@ -254,7 +265,7 @@
         }
 .Todo-body {
     display: flex;
-    margin-left: 10%;
+    margin-left: 50px;
     margin-top: 50px;
     flex-wrap: wrap;
     /* Allow cards to wrap to the next line */
@@ -271,21 +282,22 @@
 }
 
 .Card {
-    margin: 10px;
+    /* margin: 10px; */
     width: 90%;
     height: 50%;
     flex: 1;
     /* Add some margin around the card for spacing */
 }
 .Del-btn{
-    width: 110%;
-    margin-left: -10px;
+    width: 100%;
+    /* margin-left: -10px; */
 }
 .btn-content{
     font-size: 15px;
     /* display: flex; */
     padding: 0.05rem 0;
 }
+
 
 .Fun-btn:hover {
     background-color: #c96146;
@@ -359,7 +371,16 @@
         margin-top: 3px;
     }
 
+    .Todo-body{
+        margin-right: 10px !important;
+        margin-left: 30px !important;
+    }
     .todo-inputs {
         font-size: 13px;
     }
+
+        .Del-btn {
+            width: 110%;
+            margin-left: -10px;
+        }
 }

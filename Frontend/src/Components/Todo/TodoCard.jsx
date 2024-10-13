@@ -8,15 +8,15 @@ const TodoCard = ({ title, body, onEdit, onDelete }) => {
     <Card body className='Card'>
       <CardTitle tag="h5">{title}</CardTitle>
       <CardText>{body}</CardText>
-      <Row>
+      <Row style={{gap:"1px"}}>
         <Col>
-          <Button className='Fun-btn d-flex align-items-center justify-content-between' onClick={onEdit}>
+          <Button className='Fun-btn d-flex align-items-center justify-content-between' onClick={onEdit} >
             Edit Todo
             <FiEdit className="FiEdit ml-2" />
           </Button>
         </Col>
         <Col>
-          <Button className='Del-btn Fun-btn d-flex align-items-center justify-content-between' onClick={onDelete}>
+          <Button className='Del-btn Fun-btn d-flex align-items-center justify-content-between' onClick={onDelete} >
             <div className='btn-content'>Delete Todo</div>
             <RiDeleteBack2Line className="ri-delete-back2-line ml-2" />
           </Button>
