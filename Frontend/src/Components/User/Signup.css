@@ -1,6 +1,6 @@
-/* Signup.css */
+/* Signin.css */
 
-.signup-page {
+.signin-page {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -10,7 +10,7 @@
     /* Transition effect for the page */
 }
 
-.signup-page.fade-out {
+.signin-page.fade-out {
     opacity: 0;
     /* Fade-out effect */
 }
@@ -29,7 +29,7 @@
     /* Default position from top */
 }
 
-.signup-title {
+.signin-title {
     font-size: 60px;
     text-align: center;
     border-bottom: 1px solid #e84a5f76;
@@ -37,7 +37,7 @@
     transform: translateX(-50%);
     color: #e84a5f;
     font-weight: 800;
-    margin-top: -40px;
+    margin-top: -140px;
     /* Adjust margin as needed */
 }
 
@@ -52,7 +52,7 @@
     font-size: 16px;
 }
 
-.signup-btn {
+.signin-btn {
     background-color: #e84a5f;
     /* Primary button color */
     color: white;
@@ -64,7 +64,7 @@
     width: 100%;
 }
 
-.signup-btn:hover {
+.signin-btn:hover {
     background-color: #c73e4f;
     /* Button hover effect */
 }
@@ -106,19 +106,19 @@
 /* Media Queries for responsive design */
 /* Hide the title and vertical line on smaller screens */
 @media (max-width: 960px) {
-   
- 
 
-   .signup-container {
-       max-width: 80%;
-       margin-top: -30px;
-       /* Widen the form container */
-   }
 
-   .form-container {
-       margin: 0 auto;
-       padding: 20px;
-   }
+
+    .signin-container {
+        max-width: 80%;
+        margin-top: -30px;
+        /* Widen the form container */
+    }
+
+    .form-container {
+        margin: 0 auto;
+        padding: 20px;
+    }
 
 
     .form-container {
@@ -133,6 +133,60 @@
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         /* Add subtle shadow for emphasis */
     }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(220, 215, 215, 0.983);
+    /* Slightly darker overlay for better contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #d04c4c;
+    /* White background for the modal */
+    padding: 20px;
+    border-radius: 10% 4% 10% 4% !important;
+    /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(235, 82, 82, 0.911);
+    /* Subtle shadow for depth */
+    width: 100px;
+    /* Fixed width for the modal */
+    max-width: 60%;
+    /* Responsive width */
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    /* Space between title and buttons */
+}
+
+.modal-btn {
+    margin: 10px;
+    /* Space between buttons */
+    padding: 10px 20px;
+    /* Padding for buttons */
+    border: none;
+    background: #d58a4c;
+    /* Primary button color */
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    /* Transition effect on hover */
+}
+
+.modal-btn:hover {
+    background: #d58a4c;
+    /* Darker shade on hover */
 }
 
 
@@ -157,7 +211,7 @@
         /* Centered horizontally */
     }
 
-    .signup-page {
+    .signin-page {
         padding: 0 10px;
         /* Padding around the edges */
     }

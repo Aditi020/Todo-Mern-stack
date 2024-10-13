@@ -1,28 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import Axios
+import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import './Signin.css';
 
 const Signin = () => {
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [formErrors, setFormErrors] = useState({});
+    const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
     const validateForm = () => {
         const errors = {};
-
-        // Email validation
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            errors.email = 'Please enter a valid email address.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier) && identifier.length < 3) {
+            errors.identifier = 'Please enter a valid email address or username (at least 3 characters).';
         }
-
-        // Password validation (at least 6 characters)
         if (password.length < 6) {
             errors.password = 'Password must be at least 6 characters long.';
         }
-
         return errors;
     };
 
@@ -34,34 +33,55 @@ const Signin = () => {
 
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const response = await fetch('http://localhost:3000/api/users/signin', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password }),
+                const response = await axios.post('http://localhost:3000/api/user/login', {
+                    identifier,
+                    password,
                 });
 
-                const data = await response.json();
+                const data = response.data;
 
-                if (response.ok) {
+                if (response.status === 200) {
                     localStorage.setItem('token', data.token); // Store the token
-                    navigate('/dashboard'); // Redirect to dashboard or home
+
+                    // Set showToast to true to trigger toast notification
+                    setShowToast(true);
+
+                    // Wait for 3 seconds before redirecting to the home page
+                    setTimeout(() => {
+                        navigate('/home');
+                    }, 3000); // Redirect after 3000 milliseconds (3 seconds)
                 } else {
                     setError(data.message || 'Failed to sign in');
                 }
             } catch (err) {
-                setError('An error occurred while signing in.');
+                setError(err.response?.data?.message || 'An error occurred while signing in.');
             }
         }
     };
+
+    useEffect(() => {
+        if (showToast) {
+            toast.success("Welcome to QuicList!", {
+                position: "top-right",
+                autoClose: 2000, // Toast will automatically close after 3000 milliseconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
+            // Reset showToast after displaying the toast
+            setShowToast(false);
+        }
+    }, [showToast]);
 
     return (
         <div className="signin-page d-flex justify-content-center align-items-center">
             <Container className="signin-container">
                 <Row>
-                    <Col lg="6" md="6" sm="12" className="d-flex align-items-center justify-content-center hide-on-small-screen">
-                        <h1 className="signin-title">SIGN-IN</h1>
+                    <Col lg="6" className="Side-section d-none d-md-flex align-items-center justify-content-center">
+                        <h1 className="signup-title">SIGN-IN</h1>
                         <div className="vertical-line"></div>
                     </Col>
 
@@ -73,13 +93,13 @@ const Signin = () => {
                                 <form onSubmit={handleSubmit}>
                                     <div className="form__group">
                                         <input
-                                            type="email"
-                                            placeholder="Email"
+                                            type="text"
+                                            placeholder="Username or Email"
                                             className="form__input"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={identifier}
+                                            onChange={(e) => setIdentifier(e.target.value)}
                                         />
-                                        {formErrors.email && <span className="error">{formErrors.email}</span>}
+                                        {formErrors.identifier && <span className="error">{formErrors.identifier}</span>}
                                     </div>
                                     <div className="form__group">
                                         <input
@@ -110,6 +130,8 @@ const Signin = () => {
                     </Col>
                 </Row>
             </Container>
+            {/* Render ToastContainer for notifications */}
+            <ToastContainer />
         </div>
     );
 };

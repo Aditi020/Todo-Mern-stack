@@ -3,6 +3,8 @@ import { Col, Row, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './Signup.css';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ const Signup = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [showModal, setShowModal] = useState(false); // State for modal
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -46,6 +49,8 @@ const Signup = () => {
             try {
                 const response = await axios.post('http://localhost:3000/api/user/register', formData);
                 console.log(response);
+                toast.success("User Successfully Registered"); // Show Toast notification
+                setShowModal(true); // Show the modal
                 setFormData({
                     username: '',
                     email: '',
@@ -54,11 +59,23 @@ const Signup = () => {
                 });
                 setErrors({});
             } catch (error) {
-                console.error("There was an error registering the user:", error);
+                // Check if the error response indicates that the user already exists
+                if (error.response && error.response.status === 400) {
+                    toast.error("User already exists."); // Show error notification
+                } else {
+                    console.error("There was an error registering the user:", error);
+                }
             }
         } else {
             setErrors(validationErrors);
         }
+    };
+
+    const handleModalClose = () => setShowModal(false);
+    const handleRedirectToSignin = () => {
+        handleModalClose();
+        // Redirect to the Sign In page
+        window.location.href = '/signin';
     };
 
     return (
@@ -66,8 +83,8 @@ const Signup = () => {
             <Container className="signup-container">
                 <Row>
                     <Col
-                        lg="6" 
-                        className="Side-section d-none d-md-flex align-items-center justify-content-center" 
+                        lg="6"
+                        className="Side-section d-none d-md-flex align-items-center justify-content-center"
                     >
                         <h1 className="signup-title">SIGN-UP</h1>
                         <div className="vertical-line"></div>
@@ -136,6 +153,16 @@ const Signup = () => {
                     </Col>
                 </Row>
             </Container>
+            <ToastContainer />
+            {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Login in?</h3>
+                        <button onClick={handleRedirectToSignin} className="modal-btn">Yes, Redirect to Sign In</button>
+                        <button onClick={handleModalClose} className="modal-btn">Cancel</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
