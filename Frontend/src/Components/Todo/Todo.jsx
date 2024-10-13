@@ -17,14 +17,14 @@ const Todo = () => {
 
   useEffect(() => {
     // Fetch user todos if logged in
-    if (token && userId) {
+    if (token) {
       fetchUserTodos();
     }
-  }, [token, userId]);
+  }, [token]);
 
   const fetchUserTodos = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/profile/${userId}/todos`, {
+      const response = await axios.get(`http://localhost:3000/api/user/profile/todos`, {
         headers: {
           'Authorization': `Bearer ${token}`, // Use token for authorization
         },
@@ -54,12 +54,13 @@ const Todo = () => {
     }
 
     try {
-      if (token && userId) {
-        // User is signed in, save the todo to the database with userId
-        const response = await axios.post(`http://localhost:3000/api/todos`, {
+      if (token) {
+        console.log(id.todo); // Debug check
+
+        // User is signed in, save the todo to the database
+        const response = await axios.post(`http://localhost:3000/api/user/todos`, {
           title: inputs.title,
           body: inputs.body,
-          userId: userId, // Use userId from session storage
         }, {
           headers: {
             'Authorization': `Bearer ${token}`, // Use the JWT token for authorization
@@ -70,19 +71,25 @@ const Todo = () => {
         setUserTodos([...userTodos, response.data]);
         toast.success('Todo created successfully!');
       } else {
-        // Show a notification for non-logged in users
         toast.warn("Your task is not saved, please SignUp!");
         // Add to public todos state
         setTodos([...todos, inputs]);
         toast.success('Todo created successfully!');
       }
 
+      // Clear the input fields and state
       setInputs({ title: '', body: '' });
       setShowTextarea(false);
       setEditIndex(null); // Reset the edit state
     } catch (error) {
       console.error("Error creating todo:", error);
-      toast.error("Failed to create todo.");
+      if (error.response) {
+        console.error("Server responded with status:", error.response.status);
+        console.error("Response data:", error.response.data);
+        toast.error(`Failed to create todo: ${error.response.data.message || "An error occurred."}`);
+      } else {
+        toast.error("Failed to create todo. Network error.");
+      }
     }
   };
 
@@ -100,7 +107,7 @@ const Todo = () => {
   };
 
   const deleteTodo = (index) => {
-    if (token && userId) {
+    if (token) {
       // Logic for deleting a user-specific todo
       const updatedUserTodos = userTodos.filter((_, i) => i !== index);
       setUserTodos(updatedUserTodos);
@@ -166,7 +173,7 @@ const Todo = () => {
 
       <div className='Todo-body'>
         <Row className="todo-list container">
-          {token && userId ? userTodos.map((item, index) => (
+          {token ? userTodos.map((item, index) => (
             <Col sm="6" md="4" key={index}>
               <TodoCard
                 title={item.title}
