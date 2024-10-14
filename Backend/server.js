@@ -1,6 +1,5 @@
-// Importing required modules and files
 require("dotenv").config();
-const { createTodo} = require("./type.js"); // Import validation schemas
+const { createTodo } = require("./type.js"); // Import validation schemas
 const connectDB = require('./Config/db.js');
 connectDB();
 
@@ -13,7 +12,7 @@ const app = express();
 app.use(express.json()); // Middleware to parse JSON request bodies
 
 // app.use(bodyParser.json());
-//BodyParser is included inside express
+// BodyParser is included inside express
 // Middleware to parse JSON request bodies (similar to express.json())
 
 app.use(cors()); // Enable CORS for all origins
@@ -80,16 +79,22 @@ app.use('/api/user', userRoutes); // Use user routes for user-related API calls
 
 // Start the server and listen on port 3000
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+// Root endpoint
+app.get('/', (req, res) => {
+    res.send('Hello World!'); // Endpoint to display Hello World
 });
 
-app.get('/',(req, res)=> {
-    res.send('Hello World!');
-});
-
-
+// Middleware to log requests
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
+
+// Export the app for Vercel
+module.exports = app;
+
+// If using serverless functions, you might want to export a handler too
+if (process.env.VERCEL) {
+    const serverless = require('serverless-http');
+    module.exports.handler = serverless(app);
+}

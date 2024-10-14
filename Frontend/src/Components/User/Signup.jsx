@@ -47,7 +47,7 @@ const Signup = () => {
         const validationErrors = validateForm();
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const response = await axios.post('http://localhost:3000/api/user/register', formData);
+                const response = await axios.post(`${window.location.origin}/api/user/register`, formData);
                 console.log(response);
                 toast.success("User Successfully Registered"); // Show Toast notification
                 setShowModal(true); // Show the modal

@@ -24,7 +24,7 @@ const Todo = () => {
 
   const fetchUserTodos = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/user/profile/todos`, {
+      const response = await axios.get(`${window.location.origin}/api/user/profile/todos`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -56,7 +56,7 @@ const Todo = () => {
       if (token) {
         if (editIndex !== null) {
           // Editing an existing todo
-          const response = await axios.put(`http://localhost:3000/api/user/todos/${currentTodoId}`, {
+          const response = await axios.put(`${window.location.origin}/api/user/todos/${currentTodoId}`, {
             title: inputs.title,
             body: inputs.body,
           }, {
@@ -75,7 +75,7 @@ const Todo = () => {
           toast.success('Todo updated successfully!');
         } else {
           // User is signed in, save the todo to the database
-          const response = await axios.post(`http://localhost:3000/api/user/todos`, {
+          const response = await axios.post(`${window.location.origin}/api/user/todos`, {
             title: inputs.title,
             body: inputs.body,
           }, {
@@ -128,7 +128,7 @@ const Todo = () => {
     if (token) {
       const todoToDelete = userTodos[index];
       try {
-        await axios.delete(`http://localhost:3000/api/user/todos/${todoToDelete._id}`, {
+        await axios.delete(`${window.location.origin}/api/user/todos/${todoToDelete._id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

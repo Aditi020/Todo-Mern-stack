@@ -36,7 +36,7 @@ const Signin = () => {
 
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const response = await axios.post('http://localhost:3000/api/user/login', {
+                const response = await axios.post(`${window.location.origin}/api/user/login`, {
                     identifier,
                     password,
                 });
