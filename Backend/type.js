@@ -9,9 +9,10 @@ const registerUserSchema = z.object({
 
 // Zod validation for user login
 const loginUserSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
+    identifier: z.string().min(1, { message: "Identifier is required" }), // Changed from email to identifier
+    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
 });
+
 
 // Zod validation for updating user profile
 const updateUserProfileSchema = z.object({

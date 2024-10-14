@@ -39,18 +39,30 @@ const loginUser = async (req, res) => {
         return res.status(400).json({ msg: "Validation failed: " + JSON.stringify(parsed.error.flatten()) });
     }
 
-    const { email, password } = parsed.data;
+    let { identifier, password } = parsed.data;
 
     try {
-        // Find the user by email
-        const user = await User.findOne({ email });
+        // Check if the identifier is an email (by looking for '@')
+        const isEmail = identifier.includes('@');
 
+        let user;
+
+        // Query user by email if it's an email, making it case-insensitive using regex
+        if (isEmail) {
+            identifier = identifier.toLowerCase(); // Ensure lowercase for email
+            user = await User.findOne({ email: { $regex: `^${identifier}$`, $options: 'i' } });
+        } else {
+            // If it's a username, treat it as case-sensitive
+            user = await User.findOne({ username: identifier });
+        }
+
+        // If no user is found
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
 
-        // Validate password
-        const isMatch = user.password === password; // Adjust this if you're using hashing
+        // Validate password (replace this with bcrypt comparison if passwords are hashed)
+        const isMatch = user.password === password;
 
         if (!isMatch) {
             return res.status(400).json({ msg: "Invalid credentials" });
@@ -73,6 +85,7 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ msg: "Server error" });
     }
 };
+
 
 // Get user profile
 const getUserProfile = async (req, res) => {
