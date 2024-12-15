@@ -89,9 +89,20 @@ const Todo = () => {
           toast.success('Todo created successfully!');
         }
       } else {
-        // Add to public todos state
-        setPublicTodos((prevTodos) => [...prevTodos, inputs]);
-        toast.success('Todo created successfully!');
+        // Logic for non-signed-in users
+        if (editIndex !== null) {
+          // Update an existing public todo
+          setPublicTodos((prevTodos) =>
+            prevTodos.map((todo, i) =>
+              i === editIndex ? { ...todo, title: inputs.title, body: inputs.body } : todo
+            )
+          );
+          toast.success('Public Todo updated successfully!');
+        } else {
+          // Add a new public todo
+          setPublicTodos((prevTodos) => [...prevTodos, inputs]);
+          toast.success('Todo created successfully!');
+        }
       }
 
       // Clear the input fields and reset state

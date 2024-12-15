@@ -16,10 +16,10 @@ body,
 
 main {
     margin-top: -5%;
-    margin-bottom: 10%;
+    /* margin-bottom: 10%; */
     width: 100%;
     height: 100vh;
-    flex:1;
+    flex: 1;
     display: flex;
     flex-grow: 1;
     /* Allow the main content to grow and take up available space */
@@ -29,23 +29,10 @@ main {
 
 
 
-.Footer{
-    background-color: #37373b;
-        width: 100%;
-        margin-top: auto;
-        /* Ensures the footer pushes to the bottom */
-        /* padding: 1rem 0 0; */
-        /* position: fixed; */
-        bottom: 0;
-        /* Optional: For styling purposes */
-
-}
-
-
 @media (max-width: 780px) {
-.App{
-     width: 100%; 
-    /* margin-top: -10%; */
+    .App {
+        width: 100%;
+        /* margin-top: -10%; */
         margin-bottom: 10%;
-}
+    }
 }
