@@ -4,9 +4,9 @@
   "description": "Backend for Todo application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node server.js --prefix Backend",
-    "start": "nodemon server.js"
+  "start": "node server.js",
+  "dev": "nodemon server.js",
+  "server": "node server.js --prefix Backend"
   },
   "author": "Aditi Kumar",
   "license": "ISC",
@@ -20,6 +20,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.9"
   }
 }

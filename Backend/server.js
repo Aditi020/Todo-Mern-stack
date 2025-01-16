@@ -17,6 +17,11 @@ app.use(express.json()); // Middleware to parse JSON request bodies
 
 app.use(cors()); // Enable CORS for all origins
 
+// Root endpoint
+app.get('/', (req, res) => {
+    res.send('Hello World!'); // Endpoint to display Hello World
+});
+
 const errorHandler = require('./Middlewares/Error');
 app.use(errorHandler); // Middleware for Error Handling 
 
@@ -79,22 +84,14 @@ app.use('/api/user', userRoutes); // Use user routes for user-related API calls
 
 // Start the server and listen on port 3000
 
-// Root endpoint
-app.get('/', (req, res) => {
-    res.send('Hello World!'); // Endpoint to display Hello World
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
-// Middleware to log requests
+
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
-
-// Export the app for Vercel
-module.exports = app;
-
-// If using serverless functions, you might want to export a handler too
-if (process.env.VERCEL) {
-    const serverless = require('serverless-http');
-    module.exports.handler = serverless(app);
-}
