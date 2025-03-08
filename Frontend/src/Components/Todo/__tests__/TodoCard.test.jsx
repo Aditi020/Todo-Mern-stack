@@ -20,9 +20,9 @@ describe('TodoCard Component', () => {
     expect(screen.getByText('Test Todo')).toBeInTheDocument();
     expect(screen.getByText('Test Content')).toBeInTheDocument();
 
-    // Test interactions
-    fireEvent.click(screen.getByText('Edit Todo'));
-    fireEvent.click(screen.getByText('Delete Todo'));
+    // Test interactions with correct button text
+    fireEvent.click(screen.getByText('Edit'));
+    fireEvent.click(screen.getByText('Delete'));
 
     expect(mockOnEdit).toHaveBeenCalledTimes(1);
     expect(mockOnDelete).toHaveBeenCalledTimes(1);

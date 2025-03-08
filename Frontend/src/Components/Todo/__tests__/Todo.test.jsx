@@ -8,8 +8,7 @@ describe('Todo Component - Guest User', () => {
     sessionStorage.clear();
   });
 
-  test('creates and deletes a todo without authentication', async () => {
-    // Render component
+  test('creates and deletes a text todo without authentication', async () => {
     render(<Todo />);
 
     // Create todo
@@ -17,18 +16,25 @@ describe('Todo Component - Guest User', () => {
     fireEvent.change(screen.getByPlaceholderText('TITLE'), {
       target: { value: 'Test Title' }
     });
-    fireEvent.change(screen.getByPlaceholderText('Body'), {
+
+    // Use correct placeholder for text content
+    fireEvent.change(screen.getByPlaceholderText('TEXT CONTENT'), {
       target: { value: 'Test Body' }
     });
-    fireEvent.click(screen.getByText('Add'));
+
+    // Wait for Add button to be enabled
+    await waitFor(() => {
+      fireEvent.click(screen.getByRole('button', { name: /Add/i }));
+    });
 
     // Verify creation
     await waitFor(() => {
       expect(screen.getByText('Test Title')).toBeInTheDocument();
     });
 
-    // Delete todo
-    fireEvent.click(screen.getAllByText('Delete Todo')[0]);
+    // Delete todo (update query to match actual button text)
+    const deleteButtons = await screen.findAllByText('Delete');
+    fireEvent.click(deleteButtons[0]);
 
     // Verify deletion
     await waitFor(() => {
