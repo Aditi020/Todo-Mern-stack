@@ -31,4 +31,4 @@ jobs:
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: aditi020  # Your Vercel username (case-sensitive)
+          scope: aditi020  
