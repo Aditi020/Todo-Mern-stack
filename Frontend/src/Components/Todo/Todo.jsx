@@ -1,42 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Todo.css';
 import TodoCard from './TodoCard.jsx';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { ReactSketchCanvas } from 'react-sketch-canvas';
+import { MdBrush, MdTextFields } from "react-icons/md";
 
 const Todo = () => {
-  const [showTextarea, setShowTextarea] = useState(false);
-  const [inputs, setInputs] = useState({ title: '', body: '' });
-  const [userTodos, setUserTodos] = useState([]); // User-specific todos
-  const [publicTodos, setPublicTodos] = useState([]); // Public todos for non-signed-in users
-  const [editIndex, setEditIndex] = useState(null); // Track the index of the item being edited
-  const [currentTodoId, setCurrentTodoId] = useState(null); // To store the ID of the todo being edited
-  const token = sessionStorage.getItem('token'); // Get the token from session storage
+  const [showInput, setShowInput] = useState(false);
+  const [inputs, setInputs] = useState({ title: '', body: '', type: 'text' });
+  const [userTodos, setUserTodos] = useState([]);
+  const [publicTodos, setPublicTodos] = useState([]);
+  const [editIndex, setEditIndex] = useState(null);
+  const [currentTodoId, setCurrentTodoId] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const canvasRef = useRef();
+  const token = sessionStorage.getItem('token');
 
   useEffect(() => {
-    // Fetch user todos if logged in
-    if (token) {
-      fetchUserTodos();
-    }
+    if (token) fetchUserTodos();
   }, [token]);
 
   const fetchUserTodos = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000//api/user/profile/todos`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+      const response = await axios.get(`http://localhost:3000/api/user/profile/todos`, {
+        headers: { 'Authorization': `Bearer ${token}` },
       });
-      setUserTodos(response.data.todos); // Set the fetched user todos
+      setUserTodos(response.data.todos);
     } catch (error) {
       console.error("Error fetching user todos:", error);
     }
   };
 
-  const showTextareaField = () => {
-    setShowTextarea(true);
+  const handleSaveDrawing = async () => {
+    try {
+      const dataURL = await canvasRef.current.exportImage('png');
+      const newInputs = { ...inputs, body: dataURL, type: 'drawing' };
+      await submit(null, newInputs); // Direct submission with drawing data
+    } catch (error) {
+      console.error('Error saving drawing:', error);
+      toast.error('Failed to save drawing');
+    }
   };
 
   const change = (e) => {
@@ -44,133 +50,80 @@ const Todo = () => {
     setInputs({ ...inputs, [name]: value });
   };
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const submit = async (e, customData) => {
+    if (e) e.preventDefault();
+    const submitData = customData || inputs;
 
-    if (!inputs.title || !inputs.body) {
-      toast.warn('Both fields are required');
+    if (!submitData.title || !submitData.body) {
+      toast.warn('Title and content are required');
       return;
     }
 
     try {
       if (token) {
         if (editIndex !== null) {
-          // Editing an existing todo
-          const response = await axios.put(`http://localhost:3000//api/user/todos/${currentTodoId}`, {
-            title: inputs.title,
-            body: inputs.body,
-          }, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
+          await axios.put(`http://localhost:3000/api/user/todos/${currentTodoId}`, submitData, {
+            headers: { 'Authorization': `Bearer ${token}` },
           });
-
-          // Update the state with the edited todo
-          setUserTodos((prevTodos) =>
-            prevTodos.map((todo) =>
-              todo._id === currentTodoId ? { ...todo, title: inputs.title, body: inputs.body } : todo
-            )
-          );
-
-          toast.success('Todo updated successfully!');
+          setUserTodos(prev => prev.map(todo =>
+            todo._id === currentTodoId ? submitData : todo
+          ));
         } else {
-          // User is signed in, save the todo to the database
-          const response = await axios.post(`http://localhost:3000//api/user/todos`, {
-            title: inputs.title,
-            body: inputs.body,
-          }, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
+          const response = await axios.post(`http://localhost:3000/api/user/todos`, submitData, {
+            headers: { 'Authorization': `Bearer ${token}` },
           });
-
-          // Add the newly created todo to userTodos
-          setUserTodos((prevTodos) => [...prevTodos, response.data]);
-          toast.success('Todo created successfully!');
+          setUserTodos(prev => [...prev, response.data]);
         }
       } else {
-        // Logic for non-signed-in users
         if (editIndex !== null) {
-          // Update an existing public todo
-          setPublicTodos((prevTodos) =>
-            prevTodos.map((todo, i) =>
-              i === editIndex ? { ...todo, title: inputs.title, body: inputs.body } : todo
-            )
-          );
-          toast.success('Public Todo updated successfully!');
+          setPublicTodos(prev => prev.map((todo, i) =>
+            i === editIndex ? submitData : todo
+          ));
         } else {
-          // Add a new public todo
-          setPublicTodos((prevTodos) => [...prevTodos, inputs]);
-          toast.success('Todo created successfully!');
+          setPublicTodos(prev => [...prev, submitData]);
         }
       }
 
-      // Clear the input fields and reset state
-      setInputs({ title: '', body: '' });
-      setShowTextarea(false);
+      setInputs({ title: '', body: '', type: 'text' });
+      setShowInput(false);
       setEditIndex(null);
       setCurrentTodoId(null);
+      toast.success(`Todo ${editIndex !== null ? 'updated' : 'created'} successfully!`);
     } catch (error) {
-      console.error("Error creating/updating todo:", error);
-      if (error.response) {
-        toast.error(`Failed: ${error.response.data.message || "An error occurred."}`);
-      } else {
-        toast.error("Failed to create/update todo. Network error.");
-      }
+      console.error("Error:", error);
+      toast.error(error.response?.data?.message || "An error occurred");
     }
   };
 
   const editTodo = (index) => {
-    const todoToEdit = token ? userTodos[index] : publicTodos[index];
-    setInputs(todoToEdit); // Prefill the input fields with the selected Todo's data
-    setShowTextarea(true);
-    setEditIndex(index); // Set the index for the item being edited
-    setCurrentTodoId(todoToEdit._id); // Store the ID of the todo being edited
-  };
-
-  const cancelEdit = () => {
-    setInputs({ title: '', body: '' });
-    setShowTextarea(false);
-    setEditIndex(null);
-    setCurrentTodoId(null);
-  };
-
-  const deleteTodo = async (index) => {
-    if (token) {
-      const todoToDelete = userTodos[index];
-      try {
-        await axios.delete(`http://localhost:3000//api/user/todos/${todoToDelete._id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        // Remove the deleted todo from state
-        setUserTodos((prevTodos) =>
-          prevTodos.filter((_, i) => i !== index)
-        );
-        toast.success('Todo deleted successfully!');
-      } catch (error) {
-        console.error("Error deleting todo:", error);
-        if (error.response) {
-          toast.error(`Failed to delete todo: ${error.response.data.message || "An error occurred."}`);
-        } else {
-          toast.error("Failed to delete todo. Network error.");
-        }
-      }
-    } else {
-      // Logic for deleting a public todo
-      setPublicTodos((prevTodos) =>
-        prevTodos.filter((_, i) => i !== index)
-      );
-      toast.success('Public Todo deleted successfully!');
+    const todo = token ? userTodos[index] : publicTodos[index];
+    setInputs(todo);
+    setShowInput(true);
+    setEditIndex(index);
+    setCurrentTodoId(todo?._id);
+    setIsDrawing(todo.type === 'drawing');
+    if (todo.type === 'drawing') {
+      setTimeout(() => {
+        canvasRef.current?.loadCanvasData(todo.body);
+      }, 100);
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.clear();
-    setUserTodos([]); // Clear user todos on logout
-    setPublicTodos([]); // Clear public todos on logout
+  const deleteTodo = async (index) => {
+    try {
+      if (token) {
+        await axios.delete(`http://localhost:3000/api/user/todos/${userTodos[index]._id}`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        setUserTodos(prev => prev.filter((_, i) => i !== index));
+      } else {
+        setPublicTodos(prev => prev.filter((_, i) => i !== index));
+      }
+      toast.success('Todo deleted!');
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete");
+    }
   };
 
   return (
@@ -184,35 +137,97 @@ const Todo = () => {
             value={inputs.title}
             placeholder="TITLE"
             className='my-3 p-2 todo-inputs'
-            onClick={showTextareaField}
+            onClick={() => setShowInput(true)}
             onChange={change}
           />
-          {showTextarea && (
-            <textarea
-              type="text"
-              name="body"
-              value={inputs.body}
-              placeholder="Body"
-              className='p-2 todo-inputs textarea-transition'
-              onChange={change}
-            />
+
+          {showInput && (
+        <div className="input-mode-container">
+  <div className="mode-switcher mb-3">
+    <Button
+      color={!isDrawing ? 'primary' : 'secondary'}
+      onClick={() => setIsDrawing(false)}
+      style={{
+        padding: '8px 16px',
+        fontSize: '16px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+      }}
+    >
+      <MdTextFields size={20} /> Text
+    </Button>
+
+    <Button
+      color={isDrawing ? 'primary' : 'secondary'}
+      onClick={() => setIsDrawing(true)}
+      className="ms-2"
+      style={{
+        padding: '8px 16px',
+        fontSize: '16px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+      }}
+    >
+      <MdBrush size={20} /> Draw
+    </Button>
+  </div>
+              {isDrawing ? (
+                <div className="drawing-input">
+                  <ReactSketchCanvas
+                    ref={canvasRef}
+                    style={{ width: '100%', height: '250px' }}
+                    strokeWidth={4}
+                    strokeColor="black"
+                  />
+                  <div className="drawing-buttons mt-3">
+                    <Button color="primary" onClick={handleSaveDrawing}>
+                      Save Drawing
+                    </Button>
+                    <Button color="secondary" onClick={() => setIsDrawing(false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                  <textarea
+                    name="body"
+                    value={inputs.body}
+                    placeholder="TEXT CONTENT"
+                    className="p-2 todo-inputs"
+                    onChange={change}
+                    rows={5} 
+                    style={{
+                      // resize: 'none',  
+                      fontSize: '14px', 
+                      borderRadius: '6px', 
+                      border: '1px solid #ccc',  
+                    }}
+                  />
+
+              )}
+            </div>
           )}
         </div>
       </div>
 
       <div className="button-container d-flex align-items-center">
-        <button
-          className={editIndex !== null ? 'Update-btn display-flex' : 'Add-btn display-flex'}
-          onClick={submit}
-        >
-          {editIndex !== null ? 'Update' : 'Add'}
-        </button>
-
-        {editIndex !== null && (
+        {!isDrawing && (
           <button
-            className="Cancel-btn display-flex"
-            onClick={cancelEdit}
+            className={editIndex !== null ? 'Update-btn' : 'Add-btn'}
+            onClick={(e) => submit(e)}
           >
+            {editIndex !== null ? 'Update' : 'Add'}
+          </button>
+        )}
+        {editIndex !== null && (
+          <button className="Cancel-btn" onClick={() => {
+            setInputs({ title: '', body: '', type: 'text' });
+            setShowInput(false);
+            setEditIndex(null);
+            setCurrentTodoId(null);
+          }}>
             Cancel
           </button>
         )}
@@ -220,26 +235,17 @@ const Todo = () => {
 
       <div className='Todo-body'>
         <Row className="todo-list container">
-          {token ? userTodos.map((item, index) => (
-            <Col sm="6" md="4" key={item._id}> {/* Using item's _id as the key */}
+          {(token ? userTodos : publicTodos).map((item, index) => (
+            <Col sm="6" md="4" key={token ? item._id : index}>
               <TodoCard
                 title={item.title}
                 body={item.body}
-                onEdit={() => editTodo(index)}
-                onDelete={() => deleteTodo(index)}
-              />
-            </Col>
-          )) : publicTodos.map((item, index) => (
-            <Col sm="6" md="4" key={index}>
-              <TodoCard
-                title={item.title}
-                body={item.body}
+                type={item.type}
                 onEdit={() => editTodo(index)}
                 onDelete={() => deleteTodo(index)}
               />
             </Col>
           ))}
-
         </Row>
       </div>
     </div>

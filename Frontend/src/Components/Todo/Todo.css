@@ -4,7 +4,7 @@
     margin-top: 80px;
     /* flex:1; */
     display: flex;
-        flex-direction: column;
+    flex-direction: column;
 }
 
 /* Main container holding the input fields */
@@ -86,44 +86,118 @@
     transform: translateY(1px);
 }
 
- .Update-btn {
+.Update-btn {
     background-color: #878c88;
-        color: white;
-        padding: 6px 25px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        /* margin-top: 10px; */
-        margin-left: 52%;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        /* Add margin to the top */
-        transition: all 0.3s ease;
-        align-self: flex-start;
- }
+    color: white;
+    padding: 6px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    /* margin-top: 10px; */
+    margin-left: 52%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    /* Add margin to the top */
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
 
 
 .Cancel-btn {
-  background-color: red;
-  color: white;
-  margin-left: 10px;
-  font-size: 15px;
-        padding: 6px 25px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  cursor: pointer;
+    background-color: red;
+    color: white;
+    margin-left: 10px;
+    font-size: 15px;
+    padding: 6px 25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .Cancel-btn:hover {
-  background-color: darkred;
+    background-color: darkred;
 }
 
 .Fun-btn .btn-content {
-font-size: 16px;
+    font-size: 16px;
 
 }
 
+/* Input Mode Container */
+.input-mode-container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
 
+.mode-switcher {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mode-switcher button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  font-weight: 500;
+}
+
+/* Drawing Input */
+.drawing-input {
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.drawing-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Preview Styles */
+.drawing-preview {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.text-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+/* Badge Styling */
+.badge {
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+  margin-left: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .mode-switcher {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .drawing-input {
+    padding: 0.5rem;
+  }
+  
+  .drawing-preview {
+    height: 150px;
+  }
+}
 
 /* Fade-in animation */
 @keyframes fadeIn {
@@ -137,18 +211,96 @@ font-size: 16px;
 }
 
 /* CARD STYLING */
+/*
+Draw it section
+*/
+.brush-icon {
+    /* Keep existing styles */
+    display: inline-flex !important;
+    min-width: 36px;
+    min-height: 36px;
+    /* Add these */
+    align-items: center;
+    justify-content: center;
+    font-size: 24px !important;
+    /* Force icon size */
+}
+
+.brush-icon:hover {
+    background-color: #0056b3 !important;
+    transform: scale(1.05);
+}
 
 
+/* Text Content */
+.text-content {
+    padding: 10px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Title Truncation */
+.text-truncate {
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Drawing canvas container */
+.react-sketch-canvas {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* Modal backdrop */
+/* Drawing Modal Backdrop */
+.drawing-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Drawing Modal */
+.drawing-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* Drawing Buttons Container */
+.drawing-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Brush Icon Contrast Fix */
+
+
+/* Drawing Modal Overlay */
 .Todo-body {
     display: flex;
     margin-left: 10%;
     margin-top: 50px;
     margin-bottom: 20px;
     flex-wrap: wrap;
-        /* Allow cards to wrap to the next line */
-        flex: 1;
-        display: flex;
-        /* Allow this section to grow */
+    /* Allow cards to wrap to the next line */
+    flex: 1;
+    display: flex;
+    /* Allow this section to grow */
 }
 
 .todo-list {
@@ -163,7 +315,7 @@ font-size: 16px;
     margin: 10px;
     width: 90%;
     height: 50%;
-    flex:1 ;
+    flex: 1;
     /* Add some margin around the card for spacing */
 }
 
@@ -205,7 +357,7 @@ font-size: 16px;
     /* Adjust icon size */
 }
 
-.Fun-btn .FiEdit-line{
+.Fun-btn .FiEdit-line {
     margin-left: 0.5rem;
     padding-bottom: 1rem;
 }
@@ -219,29 +371,31 @@ font-size: 16px;
 /* Responsive Styling */
 
 
-@media (max-width:980px){
+@media (max-width:980px) {
     .Add-btn {
         margin-left: 70%;
     }
-    .Fun-btn{
+
+    .Fun-btn {
         margin-bottom: 5px;
     }
 }
 
 
 @media (max-width: 768px) {
-   
-   .todo{
-    margin-top: 10px;
-   }
+
+    .todo {
+        margin-top: 10px;
+    }
+
     .todo-main {
         padding: 20px;
         width: 100%;
-        max-width: 330px ;
+        max-width: 330px;
         /* Ensure it still takes the full width */
         justify-content: center;
         margin-left: 15%;
-        margin-right: 30% ;
+        margin-right: 30%;
         /* border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.30); */
         /* Keep centered */
@@ -258,110 +412,116 @@ font-size: 16px;
     }
 
     .Add-btn {
-        font-size: 14px; /* Smaller font size on smaller screens */
-        padding: 8px 18px; /* Reduced padding */
+        font-size: 14px;
+        /* Smaller font size on smaller screens */
+        padding: 8px 18px;
+        /* Reduced padding */
         margin-top: -23px;
-            margin-left: 72%;
+        margin-left: 72%;
     }
 
-        .Update-btn{
-            margin-left: 68%;
-            font-size: 14px;
-                /* Smaller font size on smaller screens */
-                padding: 8px 18px;
-                /* Reduced padding */
-                margin-top: -23px;
-        }
-.Todo-body {
-    display: flex;
-    margin-left: 50px;
-    margin-top: 50px;
-    flex-wrap: wrap;
-    /* Allow cards to wrap to the next line */
-    flex: 1;
-    /* Allow this section to grow */
-}
+    .Update-btn {
+        margin-left: 68%;
+        font-size: 14px;
+        /* Smaller font size on smaller screens */
+        padding: 8px 18px;
+        /* Reduced padding */
+        margin-top: -23px;
+    }
 
-.todo-list {
-    display: flex;
-    flex-wrap: wrap;
-    /* Ensure items wrap to the next line if necessary */
-    justify-content: center;
-    /* Center align cards */
-}
+    .Todo-body {
+        display: flex;
+        margin-left: 50px;
+        margin-top: 50px;
+        flex-wrap: wrap;
+        /* Allow cards to wrap to the next line */
+        flex: 1;
+        /* Allow this section to grow */
+    }
 
-.Card {
-    /* margin: 10px; */
-    width: 90%;
-    height: 50%;
-    flex: 1;
-    /* Add some margin around the card for spacing */
-}
-.Del-btn{
-    width: 100%;
-    /* margin-left: -10px; */
-}
-.btn-content{
-    font-size: 15px;
-    /* display: flex; */
-    padding: 0.05rem 0;
-}
+    .todo-list {
+        display: flex;
+        flex-wrap: wrap;
+        /* Ensure items wrap to the next line if necessary */
+        justify-content: center;
+        /* Center align cards */
+    }
 
+    .Card {
+        /* margin: 10px; */
+        width: 90%;
+        height: 50%;
+        flex: 1;
+        /* Add some margin around the card for spacing */
+    }
 
-.Fun-btn:hover {
-    background-color: #c96146;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
-}
+    .Del-btn {
+        width: 100%;
+        /* margin-left: -10px; */
+    }
 
-.Fun-btn:active {
-    background-color: #c96146;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    transform: translateY(1px);
-}
-
-/* Increase the size of the delete icon */
-.Fun-btn .ri-delete-back2-line {
-    font-size: 20px;
-    margin-left: 0.5rem;
-    /* Adjust icon size */
-}
-
-.Fun-btn .FiEdit-line {
-    /* margin-left: 0.5rem; */
-    padding-bottom: 1rem;
-}
- .Update-btn {
-     background-color: #878c88;
-     color: white;
-     padding: 5px 15px;
-     font-size: 16px;
-     border: none;
-     border-radius: 8px;
-     cursor: pointer;
-     /* margin-top: 10px; */
-     margin-left: 45%;
-     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-     /* Add margin to the top */
-     transition: all 0.3s ease;
-     align-self: flex-start;
- }
+    .btn-content {
+        font-size: 15px;
+        /* display: flex; */
+        padding: 0.05rem 0;
+    }
 
 
- .Cancel-btn {
-     background-color: red;
-     color: white;
-     margin-top: -23px;
-     font-size: 15px;
-     padding: 6px 15px;
-     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-     border-radius: 8px;
-     cursor: pointer;
- }
+    .Fun-btn:hover {
+        background-color: #c96146;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+    }
 
- .Cancel-btn:hover {
-     background-color: darkred;
- }
+    .Fun-btn:active {
+        background-color: #c96146;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(1px);
+    }
+
+    /* Increase the size of the delete icon */
+    .Fun-btn .ri-delete-back2-line {
+        font-size: 20px;
+        margin-left: 0.5rem;
+        /* Adjust icon size */
+    }
+
+    .Fun-btn .FiEdit-line {
+        /* margin-left: 0.5rem; */
+        padding-bottom: 1rem;
+    }
+
+    .Update-btn {
+        background-color: #878c88;
+        color: white;
+        padding: 5px 15px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        /* margin-top: 10px; */
+        margin-left: 45%;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        /* Add margin to the top */
+        transition: all 0.3s ease;
+        align-self: flex-start;
+    }
+
+
+    .Cancel-btn {
+        background-color: red;
+        color: white;
+        margin-top: -23px;
+        font-size: 15px;
+        padding: 6px 15px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .Cancel-btn:hover {
+        background-color: darkred;
+    }
 
 }
 
@@ -380,16 +540,17 @@ font-size: 16px;
         margin-top: 3px;
     }
 
-    .Todo-body{
+    .Todo-body {
         margin-right: 10px !important;
         margin-left: 30px !important;
     }
+
     .todo-inputs {
         font-size: 13px;
     }
 
-        .Del-btn {
-            width: 110%;
-            margin-left: -10px;
-        }
+    .Del-btn {
+        width: 110%;
+        margin-left: -10px;
+    }
 }
