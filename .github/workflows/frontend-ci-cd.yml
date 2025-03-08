@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Frontend  # Target frontend directory
+        working-directory: ./Frontend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
@@ -30,5 +30,6 @@ jobs:
       - uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: aditi020  
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}  # Personal Account ID (o_xxx)
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # Project ID (prj_xxx)
+          scope: aditi020  # Your Vercel username
