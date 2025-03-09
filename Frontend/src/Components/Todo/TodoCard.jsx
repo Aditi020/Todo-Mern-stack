@@ -24,7 +24,7 @@ const TodoCard = ({ title, body, type, onEdit, onDelete, index }) => {
         <span className="badge bg-secondary">{type === 'drawing' ? '🎨 Drawing' : '📝 Text'}</span>
       </CardTitle>
 
-      <CardText className="position-relative" style={{ minHeight: '200px' }}>
+      <CardText className="position-relative" style={{ minHeight: '10px' }}>
         {type === 'drawing' ? (
           <img
             src={body}
