@@ -38,11 +38,29 @@ const Todo = () => {
     try {
       const dataURL = await canvasRef.current.exportImage('png');
       const newInputs = { ...inputs, body: dataURL, type: 'drawing' };
-      await submit(null, newInputs); // Direct submission with drawing data
+      await submit(null, newInputs);
     } catch (error) {
       console.error('Error saving drawing:', error);
       toast.error('Failed to save drawing');
     }
+  };
+
+  const handleCancelDrawing = () => {
+    if (editIndex !== null) {
+      // Reset to original values
+      const originalTodo = token ? userTodos[editIndex] : publicTodos[editIndex];
+      setInputs(originalTodo);
+      setIsDrawing(originalTodo.type === 'drawing');
+      canvasRef.current?.clearCanvas();
+    } else {
+      // Reset for new entry
+      setInputs({ title: '', body: '', type: 'text' });
+      setIsDrawing(false);
+      canvasRef.current?.clearCanvas();
+    }
+    setShowInput(false);
+    setEditIndex(null);
+    setCurrentTodoId(null);
   };
 
   const change = (e) => {
@@ -88,6 +106,7 @@ const Todo = () => {
       setShowInput(false);
       setEditIndex(null);
       setCurrentTodoId(null);
+      setIsDrawing(false);
       toast.success(`Todo ${editIndex !== null ? 'updated' : 'created'} successfully!`);
     } catch (error) {
       console.error("Error:", error);
@@ -102,12 +121,13 @@ const Todo = () => {
     setEditIndex(index);
     setCurrentTodoId(todo?._id);
     setIsDrawing(todo.type === 'drawing');
-    if (todo.type === 'drawing') {
-      setTimeout(() => {
-        canvasRef.current?.loadCanvasData(todo.body);
-      }, 100);
+
+    // Clear canvas when switching to text mode
+    if (todo.type !== 'drawing') {
+      canvasRef.current?.clearCanvas();
     }
   };
+
 
   const deleteTodo = async (index) => {
     try {
@@ -142,37 +162,38 @@ const Todo = () => {
           />
 
           {showInput && (
-        <div className="input-mode-container">
-  <div className="mode-switcher mb-3">
-    <Button
-      color={!isDrawing ? 'primary' : 'secondary'}
-      onClick={() => setIsDrawing(false)}
-      style={{
-        padding: '8px 16px',
-        fontSize: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-      }}
-    >
-      <MdTextFields size={20} /> Text
-    </Button>
+            <div className="input-mode-container">
+              <div className="mode-switcher mb-3">
+                <Button
+                  color={!isDrawing ? 'primary' : 'secondary'}
+                  onClick={() => setIsDrawing(false)}
+                  style={{
+                    padding: '8px 16px',
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <MdTextFields size={20} /> Text
+                </Button>
 
-    <Button
-      color={isDrawing ? 'primary' : 'secondary'}
-      onClick={() => setIsDrawing(true)}
-      className="ms-2"
-      style={{
-        padding: '8px 16px',
-        fontSize: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-      }}
-    >
-      <MdBrush size={20} /> Draw
-    </Button>
-  </div>
+                <Button
+                  color={isDrawing ? 'primary' : 'secondary'}
+                  onClick={() => setIsDrawing(true)}
+                  className="ms-2"
+                  style={{
+                    padding: '8px 16px',
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <MdBrush size={20} /> Draw
+                </Button>
+              </div>
+
               {isDrawing ? (
                 <div className="drawing-input">
                   <ReactSketchCanvas
@@ -185,27 +206,25 @@ const Todo = () => {
                     <Button color="primary" onClick={handleSaveDrawing}>
                       Save Drawing
                     </Button>
-                    <Button color="secondary" onClick={() => setIsDrawing(false)}>
+                    <Button color="secondary" onClick={handleCancelDrawing}>
                       Cancel
                     </Button>
                   </div>
                 </div>
               ) : (
-                  <textarea
-                    name="body"
-                    value={inputs.body}
-                    placeholder="TEXT CONTENT"
-                    className="p-2 todo-inputs"
-                    onChange={change}
-                    rows={5} 
-                    style={{
-                      // resize: 'none',  
-                      fontSize: '14px', 
-                      borderRadius: '6px', 
-                      border: '1px solid #ccc',  
-                    }}
-                  />
-
+                <textarea
+                  name="body"
+                  value={inputs.body}
+                  placeholder="TEXT CONTENT"
+                  className="p-2 todo-inputs"
+                  onChange={change}
+                  rows={5}
+                  style={{
+                    fontSize: '14px',
+                    borderRadius: '6px',
+                    border: '1px solid #ccc',
+                  }}
+                />
               )}
             </div>
           )}
@@ -219,16 +238,6 @@ const Todo = () => {
             onClick={(e) => submit(e)}
           >
             {editIndex !== null ? 'Update' : 'Add'}
-          </button>
-        )}
-        {editIndex !== null && (
-          <button className="Cancel-btn" onClick={() => {
-            setInputs({ title: '', body: '', type: 'text' });
-            setShowInput(false);
-            setEditIndex(null);
-            setCurrentTodoId(null);
-          }}>
-            Cancel
           </button>
         )}
       </div>
