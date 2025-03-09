@@ -9,12 +9,12 @@ const About = () => {
                 <div className='d-flex'>
                     <h1 > About Us</h1>
                 </div>
-                <p >At QuickList, we believe that organization is essential for achieving your goals and maximizing productivity. Our Todo app is designed to help you manage tasks effortlessly, allowing you to focus on what matters most. With an intuitive interface, you can easily create, prioritize, and track your tasks, ensuring your to-do list reflects your unique workflow.No matter the complexity of your schedule, QuickList offers powerful features to keep you on top of your responsibilities.
+                <p >TaskScribe redefines digital productivity by combining traditional task management with visual brainstorming capabilities. Our hybrid platform enables seamless transition between detailed text entries and freeform sketches, catering to both analytical thinkers and creative planners. Designed for professionals, students, and creatives, TaskScribe's dual-input system helps capture complex ideas while maintaining organizational clarity.
                     <br />
                     <br />
-                    QuickList offers powerful features to keep you organized, including reminders for deadlines and flexible sorting options to view tasks by priority. Whether managing personal errands or professional projects, QuickList streamlines your workflow. Join our community of users and take control of your tasks today, unlocking your potential for a more organized and fulfilling life!
+                    With advanced features like contextual reminders, multi-format sorting, and instant sketch-to-task conversion, TaskScribe adapts to your cognitive workflow. Whether architecting project timelines, annotating concepts, or managing daily priorities, our platform maintains perfect sync between your textual and visual organizational systems. Join a new era of productivity where structured planning meets creative expression, all within a unified digital workspace.
                     </p>
-                <Button>Create Todo</Button>
+                <Button>Launch Workspace</Button>
             </div>
         </div>
     )

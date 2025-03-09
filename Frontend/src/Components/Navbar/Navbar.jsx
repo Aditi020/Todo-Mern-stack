@@ -38,14 +38,14 @@ function CustomNavbar() {
             <Container>
                 <Navbar.Brand as={Link} to="/" className="Nav-icon">
                     <FcTodoList size={30} style={{ marginRight: '12px', filter: "invert(47%) sepia(85%) saturate(326%) hue-rotate(327deg) brightness(95%) contrast(101%)" }} />
-                    <b>&nbsp; QuickList</b>
+                    <b>&nbsp; TaskScribe</b>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" onClick={toggleNavbar} style={{ border: "none" }} />
                 <Navbar.Collapse id="navbarScroll" in={isOpen} className="flex-grow-0">
                     <Nav className="ms-auto my-2 my-lg-0" style={{ fontSize: "18px" }}>
                         <Nav.Link as={Link} to="/home" className="NavLin mx-1">Home</Nav.Link>
                         <Nav.Link as={Link} to="/about" className="NavLin mx-1">About Us</Nav.Link>
-                        <Nav.Link as={Link} to="/todo" className="NavLin mx-1">Todo</Nav.Link>
+                        <Nav.Link as={Link} to="/todo" className="NavLin mx-1">Workspace</Nav.Link>
                         {!isAuthenticated ? (
                             <Nav.Link as={Link} to="/signin" className="mx-1">
                                 <Button className='nav-btn'>Sign In</Button>
